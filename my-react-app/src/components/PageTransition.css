@@ -1,0 +1,45 @@
+.page-transition {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  /* shadowy vignette */
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.96)
+  );
+
+  opacity: 0;
+
+  /* must match TransitionProvider durations */
+  transition: opacity 900ms ease-in-out;
+}
+
+/* Fade OUT: go to black */
+.page-transition.to-black {
+  opacity: 1;
+}
+
+/* Fade IN: start black then fade away */
+.page-transition.from-black {
+  opacity: 1;
+  animation: fadeInFromBlack 900ms ease-in-out forwards;
+}
+
+@keyframes fadeInFromBlack {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    transition: none;
+    animation: none;
+  }
+}

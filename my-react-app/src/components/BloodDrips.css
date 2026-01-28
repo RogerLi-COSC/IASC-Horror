@@ -1,0 +1,94 @@
+.blood-drips {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 850; /* under the page transition overlay (9999) */
+  overflow: hidden;
+}
+
+/* One drip: head + trailing smear */
+.drip {
+  position: absolute;
+  top: -40px;
+
+  width: var(--size);
+  height: calc(var(--trail) + var(--size));
+
+  opacity: var(--op);
+  filter: blur(var(--blur));
+
+  animation: dripFall var(--dur) ease-in forwards;
+}
+
+/* Left/right anchoring */
+.drip.left {
+  left: var(--x);
+}
+
+.drip.right {
+  right: var(--x);
+}
+
+/* Drip visuals */
+.drip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(255, 80, 80, 0.95),
+    rgba(140, 0, 0, 0.95) 55%,
+    rgba(40, 0, 0, 0.98)
+  );
+
+  box-shadow:
+    0 0 10px rgba(140, 0, 0, 0.45),
+    0 6px 22px rgba(0, 0, 0, 0.35);
+}
+
+/* The trailing streak */
+.drip::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--size) * 0.6);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--size) * 0.55);
+  height: var(--trail);
+  border-radius: 999px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(120, 0, 0, 0.95),
+    rgba(90, 0, 0, 0.55),
+    rgba(40, 0, 0, 0)
+  );
+}
+
+/* Movement + fade out */
+@keyframes dripFall {
+  0% {
+    transform: translateY(0);
+    opacity: var(--op);
+  }
+  80% {
+    opacity: var(--op);
+  }
+  100% {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .drip {
+    display: none;
+  }
+}

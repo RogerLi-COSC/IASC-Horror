@@ -1,0 +1,91 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+
+  background: #000;
+  border-bottom: 1px solid #2a0000;
+  z-index: 1000;
+}
+
+.navbar-inner {
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  padding: 0 16px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+/* Logo button */
+.nav-brand {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  height: 64px;
+
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(120, 0, 0, 0.35));
+}
+
+/* Menu */
+.navbar-links {
+  justify-self: center;
+  display: flex;
+  gap: clamp(10px, 2.5vw, 26px);
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.navbar-links button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  color: #e6e1dc;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.navbar-links button:hover {
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(180, 0, 0, 0.7);
+}
+
+/* Mobile safety */
+@media (max-width: 720px) {
+  .navbar-links button {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .brand-logo {
+    height: 34px;
+  }
+}

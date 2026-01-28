@@ -1,0 +1,106 @@
+.tutorial {
+  min-height: calc(100vh - 64px);
+  padding: 3rem 1.5rem 4rem;
+  background: #8f2b2b; /* deep medical red */
+  color: #f2f2f2;
+}
+
+.tutorial-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+/* HEADINGS */
+.tutorial-title {
+  margin-bottom: 1.5rem;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+/* LEFT SIDE */
+.video-frame {
+  background: #d9d9d9;
+  padding: 1.2rem;
+  border: 3px solid #2a0000;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.video-placeholder {
+  background: #eee;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: #111;
+  border: 2px dashed #555;
+}
+
+.video-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.video-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.video-subtext {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* RIGHT SIDE */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.key-row,
+.mouse-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.key {
+  width: 56px;
+  height: 56px;
+  background: #6b4b4b;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: 2px solid #2a0000;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.key.special {
+  background: #503535;
+}
+
+.mouse {
+  font-size: 2.2rem;
+}
+
+.key-label {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .tutorial-wrap {
+    grid-template-columns: 1fr;
+  }
+}
