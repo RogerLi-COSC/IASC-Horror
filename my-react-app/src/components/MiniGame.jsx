@@ -1,6 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSecretUnlock } from "./SecretUnlockContext";
+
+import wrongSfx from "../assets/wrong.mp3";
+import completeSfx from "../assets/complete.mp3";
 
 import "./MiniGame.css";
 
@@ -20,42 +23,76 @@ export default function MiniGame({
 
   const required = useMemo(() => requiredOrder.map((n) => n - 1), [requiredOrder]);
 
-  function resetPuzzle() {
+  // ===== SFX (fast replay)
+  const wrongAudioRef = useRef(null);
+  const completeAudioRef = useRef(null);
+
+  useEffect(() => {
+    wrongAudioRef.current = new Audio(wrongSfx);
+    wrongAudioRef.current.preload = "auto";
+    wrongAudioRef.current.volume = 0.85;
+
+    completeAudioRef.current = new Audio(completeSfx);
+    completeAudioRef.current.preload = "auto";
+    completeAudioRef.current.volume = 0.85;
+  }, []);
+
+  function playWrong() {
+    const a = wrongAudioRef.current;
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
+    a.play().catch(() => {});
+  }
+
+  function playComplete() {
+    const a = completeAudioRef.current;
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
+    a.play().catch(() => {});
+  }
+
+  // ✅ forced reset (no button)
+  function forceReset() {
     setRotations([0, 0, 0, 0]);
     setProgressIndex(0);
-    setWrong(false);
     setUnlocked(false);
   }
 
   function handleTileClick(tileIndex) {
     if (unlocked) return;
 
-    // rotate clicked tile 90deg
+    // check order click requirement FIRST
+    const expectedTile = required[progressIndex];
+
+    // ❌ Wrong order → SFX + forced reset + flash
+    if (tileIndex !== expectedTile) {
+      playWrong();
+
+      setWrong(true);
+      forceReset();
+
+      window.setTimeout(() => setWrong(false), 450);
+      return;
+    }
+
+    // ✅ Correct click → rotate clicked tile 90deg
     setRotations((prev) => {
       const next = [...prev];
       next[tileIndex] = (next[tileIndex] + 90) % 360;
       return next;
     });
 
-    // check order click requirement
-    const expectedTile = required[progressIndex];
-    if (tileIndex !== expectedTile) {
-      setWrong(true);
-      setProgressIndex(0);
-      window.setTimeout(() => setWrong(false), 350);
-      return;
-    }
-
-    // correct click
     const nextIndex = progressIndex + 1;
 
+    // ✅ Completed
     if (nextIndex >= required.length) {
-      // ✅ UNLOCK (in-memory only)
       setUnlocked(true);
-      unlockSecret(); // <<<<<< THIS is what makes Navbar show the icon
+      playComplete();
 
-      // small delay for “unlock feel”
-      window.setTimeout(() => navigate(unlockPath), 500);
+      unlockSecret(); // navbar secret icon appears
+      window.setTimeout(() => navigate(unlockPath), 650);
       return;
     }
 
@@ -100,9 +137,7 @@ export default function MiniGame({
           {unlocked ? <span className="mg-order"> — UNLOCKED</span> : null}
         </div>
 
-        <button className="mg-reset" type="button" onClick={resetPuzzle}>
-          Reset
-        </button>
+        {/* ✅ removed reset button */}
       </footer>
     </div>
   );
