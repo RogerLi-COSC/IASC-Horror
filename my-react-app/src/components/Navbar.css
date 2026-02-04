@@ -1,13 +1,20 @@
 .navbar {
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
-  height: 64px;
-
-  background: #000;
-  border-bottom: 1px solid #2a0000;
   z-index: 1000;
+
+  /* INCREASED HEIGHT */
+  min-height: 90px;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.85)
+  );
 }
 
 .navbar-inner {
@@ -23,7 +30,7 @@
   align-items: center;
 }
 
-/* Logo button */
+/* Logo */
 .nav-brand {
   justify-self: start;
   display: inline-flex;
@@ -48,6 +55,7 @@
 .navbar-links {
   justify-self: center;
   display: flex;
+  align-items: center;
   gap: clamp(10px, 2.5vw, 26px);
 
   list-style: none;
@@ -56,33 +64,71 @@
   white-space: nowrap;
 }
 
-.navbar-links button {
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
+/* NavLink base */
+.navlink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  cursor: pointer;
-
+  text-decoration: none;
   font: inherit;
   font-size: 0.9rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 
   color: #e6e1dc;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease, border-color 0.2s ease;
+
+  /* 2000s: hard corners, boxy hit area */
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 0;
 }
 
-.navbar-links button:hover {
+.navlink:hover {
   color: #ffffff;
   text-shadow: 0 0 6px rgba(180, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* ✅ Active highlight (square, not circular) */
+.navlink.active {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.35) inset;
+}
+
+/* Secret file icon (faded) */
+.secret-file-li {
+  display: inline-flex;
+}
+
+.secret-file-link {
+  padding: 6px 8px;
+  opacity: 0.55; /* faded */
+  border-color: rgba(255,255,255,0.10);
+}
+
+.secret-file-link:hover {
+  opacity: 0.95;
+  border-color: rgba(255,255,255,0.35);
+}
+
+.secret-file-icon {
+  color: #e6e1dc;
+  display: block;
+}
+
+/* Right spacer keeps links centered even with logo + secret icon */
+.nav-right-spacer {
+  justify-self: end;
 }
 
 /* Mobile safety */
 @media (max-width: 720px) {
-  .navbar-links button {
+  .navlink {
     font-size: 0.75rem;
     letter-spacing: 0.1em;
+    padding: 7px 8px;
   }
 
   .brand-logo {
