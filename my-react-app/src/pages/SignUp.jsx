@@ -63,14 +63,14 @@ export default function SignUp() {
               />
             </label>
 
+            {/* ✅ DOB: date picker */}
             <label className="field">
               <span className="field-label">Date of Birth:</span>
               <input
                 value={form.dob}
                 onChange={(e) => update("dob", e.target.value)}
                 className="line-input"
-                type="text"
-                placeholder="dd/mm/yyyy"
+                type="date"
                 autoComplete="off"
               />
             </label>
@@ -105,15 +105,25 @@ export default function SignUp() {
               />
             </label>
 
-            {/* ✅ Typable Phone */}
+            {/* ✅ Phone: numbers only */}
             <label className="field">
               <span className="field-label">Phone Number:</span>
               <input
                 value={form.phone}
                 onChange={(e) => update("phone", e.target.value)}
+                onInput={(e) => {
+                  // remove anything that isn't 0-9 (works for paste too)
+                  const digitsOnly = e.currentTarget.value.replace(/\D/g, "");
+                  if (digitsOnly !== e.currentTarget.value) {
+                    e.currentTarget.value = digitsOnly;
+                  }
+                  update("phone", digitsOnly);
+                }}
                 className="line-input"
-                type="text"
-                placeholder="Fake Phone # (type anything)"
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="Fake Phone # (numbers only)"
                 autoComplete="off"
               />
             </label>

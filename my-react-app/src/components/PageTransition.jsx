@@ -4,21 +4,24 @@ import "./PageTransition.css";
 
 export default function PageTransition({ children }) {
   const location = useLocation();
-  const [visible, setVisible] = useState(false);
+  const [phase, setPhase] = useState("idle"); // idle | in | out
 
   useEffect(() => {
-    setVisible(true);
+    // on route change: fade IN quickly then fade OUT
+    setPhase("in");
 
-    const timeout = setTimeout(() => {
-      setVisible(false);
-    }, 350); // duration matches CSS
+    const t1 = setTimeout(() => setPhase("out"), 420); // overlay visible
+    const t2 = setTimeout(() => setPhase("idle"), 920); // done
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [location.pathname]);
 
   return (
     <>
-      <div className={`page-fade ${visible ? "active" : ""}`} />
+      <div className={`page-fade ${phase}`} aria-hidden="true" />
       <div className="page-content">{children}</div>
     </>
   );

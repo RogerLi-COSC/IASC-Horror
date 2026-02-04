@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import TransitionProvider from "./components/TransitionProvider";
 import BloodDrips from "./components/BloodDrips";
 import BackgroundAudio from "./components/BackgroundAudio";
+import PageTransition from "./components/PageTransition";
 
 import { SecretUnlockProvider } from "./components/SecretUnlockContext";
 
@@ -30,6 +31,7 @@ export default function App() {
           <Navbar />
 
           <div className="app-shell">
+            <PageTransition>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -42,6 +44,7 @@ export default function App() {
                 element={<div className="page-pad">Download (coming soon)</div>}
               />
             </Routes>
+            </PageTransition>
           </div>
         </SecretUnlockProvider>
 

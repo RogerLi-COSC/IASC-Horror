@@ -1,0 +1,38 @@
+.bg-audio-mute {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1200; /* above drips (850) */
+  pointer-events: auto;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(140, 0, 0, 0.45);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+
+  color: #f2f2f2;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  border-radius: 0; /* keep your hard-corner style */
+  cursor: pointer;
+}
+
+.bg-audio-mute:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.bg-audio-icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.bg-audio-text {
+  font-size: 0.85rem;
+  line-height: 1;
+}

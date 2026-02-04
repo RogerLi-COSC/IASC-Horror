@@ -1,45 +1,27 @@
-.page-transition {
+.page-fade {
   position: fixed;
   inset: 0;
+  z-index: 9999; /* above everything */
   pointer-events: none;
-  z-index: 9999;
 
-  /* shadowy vignette */
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 0.55),
-    rgba(0, 0, 0, 0.96)
-  );
-
+  background: rgba(0, 0, 0, 0);
   opacity: 0;
-
-  /* must match TransitionProvider durations */
-  transition: opacity 900ms ease-in-out;
+  transition: opacity 420ms ease, background 420ms ease;
 }
 
-/* Fade OUT: go to black */
-.page-transition.to-black {
+/* fade in (cover) */
+.page-fade.in {
   opacity: 1;
+  background: rgba(0, 0, 0, 0.55);
 }
 
-/* Fade IN: start black then fade away */
-.page-transition.from-black {
-  opacity: 1;
-  animation: fadeInFromBlack 900ms ease-in-out forwards;
+/* fade out (reveal) */
+.page-fade.out {
+  opacity: 0;
+  background: rgba(0, 0, 0, 0);
 }
 
-@keyframes fadeInFromBlack {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .page-transition {
-    transition: none;
-    animation: none;
-  }
+.page-content {
+  position: relative;
+  z-index: 1;
 }
