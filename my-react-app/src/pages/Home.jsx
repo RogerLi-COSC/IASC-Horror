@@ -1,4 +1,5 @@
 import logo from "../assets/logo2.png";
+// import animated_logo from "../assets/animated-logo.gif";
 
 import p1 from "../assets/puzzle1.png";
 import p2 from "../assets/puzzle2.png";
