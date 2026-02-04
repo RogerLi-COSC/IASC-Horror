@@ -10,6 +10,7 @@ export default function Secret() {
           <br />
           <span className="secret-sub">A new fear has noticed you.</span>
         </p>
+        <div><p>test</p></div>
 
         <div className="secret-box">
           [ secret content goes here ]
