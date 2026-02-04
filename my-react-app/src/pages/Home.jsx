@@ -1,4 +1,6 @@
 import logo from "../assets/logo2.png";
+import animated_logo from "../assets/animated-logo.gif";
+
 
 import p1 from "../assets/puzzle1.png";
 import p2 from "../assets/puzzle2.png";
@@ -12,7 +14,8 @@ export default function Home() {
   return (
     <main className="home">
       <section className="home-hero">
-        <img className="home-logo" src={logo} alt="Comatose" />
+        <img className="home-logo" src={animated_logo} alt="Comatose"/>
+        {/* <video src="{animated_logo}"></video> */}
         <p className="home-tagline">The nightmare hasn’t ended.</p>
       </section>
 

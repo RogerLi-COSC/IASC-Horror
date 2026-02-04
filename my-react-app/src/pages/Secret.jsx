@@ -13,7 +13,7 @@ export default function Secret() {
         <div><p>test</p></div>
 
         <div className="secret-box">
-          [ secret content goes here ]
+          {/* [ secret content goes here ] */}
           <section>
             <ul>
               <li><h1>OMAR KUTAY</h1></li>
