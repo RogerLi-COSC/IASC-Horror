@@ -1,4 +1,11 @@
 import logo from "../assets/logo2.png";
+
+import p1 from "../assets/puzzle1.png";
+import p2 from "../assets/puzzle2.png";
+import p3 from "../assets/puzzle3.png";
+import p4 from "../assets/puzzle4.png";
+
+import MiniGame from "../components/MiniGame";
 import "./Home.css";
 
 export default function Home() {
@@ -10,14 +17,15 @@ export default function Home() {
       </section>
 
       <section className="home-minigame">
+        {/* Keeps your section title */}
         <h2 className="home-minigame-title">Mini Game</h2>
-        <div className="minigame-frame">
-          {/* Replace this with your mini-game later */}
-          <p className="minigame-placeholder">
-            [ Mini game goes here ]<br />
-            (canvas / puzzle / four-image rotate secret)
-          </p>
-        </div>
+
+        {/* Replace placeholder with real mini game */}
+        <MiniGame
+          images={[p4, p3, p1, p2]}      // puzzles 1-4
+          requiredOrder={[1, 2, 2, 3, 3, 3, 4]}   // click order (change later if needed)
+          unlockPath="/secret"
+        />
       </section>
     </main>
   );

@@ -19,34 +19,8 @@ export default function SignUp() {
 
   function onSubmit(e) {
     e.preventDefault();
-    // no saving: horror “paperwork” vibe
     alert("Form received. No information was saved.");
   }
-
-  const addressOptions = [
-    "",
-    "12 Haliford Crescent",
-    "44 River Fork Lane",
-    "9 Curfew Street",
-    "301 Ward B Hallway",
-    "17 Sleepwalker Ave",
-  ];
-
-  const phoneOptions = [
-    "",
-    "555-0199",
-    "555-0137",
-    "555-0420",
-    "555-0666",
-  ];
-
-  const emailOptions = [
-    "",
-    "patient@halifordhealth.org",
-    "intake@wardb.ca",
-    "unknown@caller.id",
-    "comatose@trial.gov",
-  ];
 
   return (
     <main className="signup">
@@ -118,49 +92,43 @@ export default function SignUp() {
               </div>
             </div>
 
+            {/* ✅ Typable Street Address */}
             <label className="field field-wide">
               <span className="field-label">Street Address:</span>
-              <select
-                className="select-line"
+              <input
                 value={form.address}
                 onChange={(e) => update("address", e.target.value)}
-              >
-                {addressOptions.map((a) => (
-                  <option key={a} value={a}>
-                    {a === "" ? "Fake Address Names With Dropdown" : a}
-                  </option>
-                ))}
-              </select>
+                className="line-input"
+                type="text"
+                placeholder="Fake Address Names (type anything)"
+                autoComplete="off"
+              />
             </label>
 
+            {/* ✅ Typable Phone */}
             <label className="field">
               <span className="field-label">Phone Number:</span>
-              <select
-                className="select-line"
+              <input
                 value={form.phone}
                 onChange={(e) => update("phone", e.target.value)}
-              >
-                {phoneOptions.map((p) => (
-                  <option key={p} value={p}>
-                    {p === "" ? "Fake Phone #’s With Dropdown" : p}
-                  </option>
-                ))}
-              </select>
+                className="line-input"
+                type="text"
+                placeholder="Fake Phone # (type anything)"
+                autoComplete="off"
+              />
             </label>
 
+            {/* ✅ Typable Email */}
             <label className="field">
               <span className="field-label">E-mail:</span>
-              <select
-                className="select-line"
+              <input
                 value={form.email}
                 onChange={(e) => update("email", e.target.value)}
-              >
-                {emailOptions.map((em) => (
-                  <option key={em} value={em}>
-                    {em === "" ? "Fake E-mails With Dropdown" : em}
-                  </option>
-                ))}
-              </select>
+                className="line-input"
+                type="text"
+                placeholder="Fake E-mails (type anything)"
+                autoComplete="off"
+              />
             </label>
           </div>
 
