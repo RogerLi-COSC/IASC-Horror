@@ -100,27 +100,6 @@ export default function Contact() {
 
         <TeamSection title="Meet the Web Team" left={webLeft} right={webRight} />
 
-        <section className="contact-bottom">
-          <div className="info-box">
-            <h2>Contact Us</h2>
-            <div className="info-line">
-              <span className="info-label">Email:</span> xxx@gmail.com
-            </div>
-            <div className="info-line">
-              <span className="info-label">Phone number:</span> (000) 000-0000
-            </div>
-          </div>
-
-          <div className="info-box">
-            <h2>Social Media</h2>
-            <div className="info-line">
-              <span className="info-label">Instagram:</span> xxxxx
-            </div>
-            <div className="info-line">
-              <span className="info-label">TikTok:</span> xxx
-            </div>
-          </div>
-        </section>
       </div>
     </main>
   );

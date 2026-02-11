@@ -13,6 +13,7 @@ import SignUp from "./pages/SignUp";
 import Tutorial from "./pages/Tutorial";
 import Contact from "./pages/Contact";
 import Secret from "./pages/Secret";
+import Footer from "./components/Footer";
 
 import "./App.css";
 import Download from "./pages/Download";
@@ -46,6 +47,7 @@ export default function App() {
               />
             </Routes>
             </PageTransition>
+            <Footer />
           </div>
         </SecretUnlockProvider>
 

@@ -35,7 +35,7 @@
   mix-blend-mode: multiply;
 }
 
-/* Typography: classic print */
+/* Typography: classic print (We might make the whole thing Georgia)*/
 .sheet,
 .sheet * {
   font-family: Georgia, "Times New Roman", serif;

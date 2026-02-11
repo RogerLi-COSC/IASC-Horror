@@ -35,7 +35,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-
+  font-family: Georgia, 'Times New Roman', Times, serif;
   /* Allow scrolling but prevent sideways drift */
   overflow-y: auto;
   overflow-x: hidden;

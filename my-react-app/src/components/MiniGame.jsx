@@ -4,7 +4,7 @@ import { useSecretUnlock } from "./SecretUnlockContext";
 
 import wrongSfx from "../assets/wrong.mp3";
 import completeSfx from "../assets/complete.mp3";
-
+import rotateSfx from "../assets/squish.mp3"; // <-- your per-click sound
 import "./MiniGame.css";
 
 export default function MiniGame({
@@ -14,6 +14,7 @@ export default function MiniGame({
 }) {
   const navigate = useNavigate();
   const { unlockSecret } = useSecretUnlock();
+  const rotateAudioRef = useRef(null);
 
   // each tile is 0/90/180/270
   const [rotations, setRotations] = useState([0, 0, 0, 0]);
@@ -35,6 +36,10 @@ export default function MiniGame({
     completeAudioRef.current = new Audio(completeSfx);
     completeAudioRef.current.preload = "auto";
     completeAudioRef.current.volume = 0.85;
+
+    rotateAudioRef.current = new Audio(rotateSfx);
+    rotateAudioRef.current.preload = "auto";
+    rotateAudioRef.current.volume = 0.90; // tweak
   }, []);
 
   function playWrong() {
@@ -53,6 +58,14 @@ export default function MiniGame({
     a.play().catch(() => {});
   }
 
+  function playRotate() {
+  const a = rotateAudioRef.current;
+  if (!a) return;
+  a.pause();
+  a.currentTime = 0;
+  a.play().catch(() => {});
+}
+
   // ✅ forced reset (no button)
   function forceReset() {
     setRotations([0, 0, 0, 0]);
@@ -66,7 +79,7 @@ export default function MiniGame({
     // check order click requirement FIRST
     const expectedTile = required[progressIndex];
 
-    // ❌ Wrong order → SFX + forced reset + flash
+    // Wrong order → SFX + forced reset + flash
     if (tileIndex !== expectedTile) {
       playWrong();
 
@@ -78,6 +91,7 @@ export default function MiniGame({
     }
 
     // ✅ Correct click → rotate clicked tile 90deg
+    playRotate();
     setRotations((prev) => {
       const next = [...prev];
       next[tileIndex] = (next[tileIndex] + 90) % 360;
@@ -85,8 +99,7 @@ export default function MiniGame({
     });
 
     const nextIndex = progressIndex + 1;
-
-    // ✅ Completed
+    //Puzzle Solved
     if (nextIndex >= required.length) {
       setUnlocked(true);
       playComplete();
@@ -102,9 +115,7 @@ export default function MiniGame({
   return (
     <div className={`mg-wrap ${wrong ? "mg-wrong" : ""} ${unlocked ? "mg-unlocked" : ""}`}>
       <header className="mg-header">
-        <h3 className="mg-title">Mini Game</h3>
-        <p className="mg-sub">Rotate and click in the correct order to unlock the file.</p>
-        <div className="mg-hint">Order: {requiredOrder.join(" → ")}</div>
+        <h3 className="mg-title"></h3>
       </header>
 
       <div className="mg-board">
