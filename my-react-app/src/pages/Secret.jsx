@@ -10,8 +10,6 @@ export default function Secret() {
           <br />
           <span className="secret-sub">A new fear has noticed you.</span>
         </p>
-        <div><p>test</p></div>
-
         <div className="secret-box">
           {/* [ secret content goes here ] */}
           <section>
@@ -39,7 +37,6 @@ export default function Secret() {
             </ul>
           </section>
           <section>
-          <section>
             <ul>
               <li><h1>ZOEY MALANO</h1></li>
               <li><p>Age: 17</p></li>
@@ -47,7 +44,7 @@ export default function Secret() {
               <li><p>Description: Popular, Dating Omar, Only cares about herself</p></li>
             </ul>
           </section>
-          <section></section>
+          <section>
             <ul>
               <li><h1>NOAH DHAVALE</h1></li>
               <li><p>Age: 17</p></li>

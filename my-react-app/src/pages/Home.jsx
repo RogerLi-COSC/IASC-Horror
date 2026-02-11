@@ -1,5 +1,5 @@
 import logo from "../assets/logo2.png";
-import animated_logo from "../assets/animated_logo.gif";
+import animated_logo from "../assets/Logo_Comatose.gif";
 
 import p1 from "../assets/puzzle1.png";
 import p2 from "../assets/puzzle2.png";
