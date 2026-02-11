@@ -1,3 +1,5 @@
+import logo from "../assets/logo2.png";
+import animated_logo from "../assets/animated_logo.gif";
 import { useState } from "react";
 import animated_logo from "../assets/Logo_Comatose.gif";
 

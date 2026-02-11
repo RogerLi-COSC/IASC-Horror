@@ -16,6 +16,7 @@ import Secret from "./pages/Secret";
 import Footer from "./components/Footer";
 
 import "./App.css";
+import Download from "./pages/Download";
 
 export default function App() {
   return (
@@ -42,7 +43,7 @@ export default function App() {
               <Route path="/secret" element={<Secret />} />
               <Route
                 path="/download"
-                element={<div className="page-pad">Download (coming soon)</div>}
+                element={<Download />}
               />
             </Routes>
             </PageTransition>
