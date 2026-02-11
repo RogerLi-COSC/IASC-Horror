@@ -1,9 +1,10 @@
 import "./Tutorial.css";
-
+import pressIVideo from "../assets/PressI.mp4";
+import pressEVideo from "../assets/PressE.mp4";
+import WholeTutorial from "../assets/WholeTutorial.mov";
 const keyClips = [
-  { key: "E", label: "Pick Up", caption: "Shows picking up an item.", id: "e" },
-  { key: "I", label: "Interact", caption: "Shows interacting with doors / objects.", id: "i" },
-  { key: "SPACE", label: "Spacebar", caption: "Shows jumping / action.", id: "space" },
+  { key: "E", label: "Pick Up", caption: "Shows picking up an item.", id: "e", video: pressEVideo },
+  { key: "I", label: "Interact", caption: "Shows interacting with doors / objects.", id: "i", video: pressIVideo},
 ];
 
 export default function Tutorial() {
@@ -15,11 +16,12 @@ export default function Tutorial() {
           <h1 className="tutorial-title">How To Play</h1>
 
           <div className="video-frame">
-            <div className="video-placeholder">
-              <div className="video-icon">▶</div>
-              <div className="video-text">Tutorial Video</div>
-              <div className="video-subtext">(main video placeholder)</div>
-            </div>
+                <video
+                  className="tutorial-video main"
+                  src={WholeTutorial}
+                  controls
+                  preload="metadata"
+                />
           </div>
         </div>
 
@@ -57,11 +59,6 @@ export default function Tutorial() {
               <span className="key-label">Interact</span>
             </div>
 
-            <div className="key-row">
-              <div className="key space">SPACE</div>
-              <span className="key-label">Spacebar</span>
-            </div>
-
             <div className="mouse-row">
               <div className="mouse">🖱</div>
               <span className="key-label">Move View</span>
@@ -93,11 +90,20 @@ export default function Tutorial() {
               {/* RIGHT: small video */}
               <div className="clip-video">
                 <div className="video-frame small">
-                  <div className="video-placeholder">
-                    <div className="video-icon">▶</div>
-                    <div className="video-text">{clip.key} Clip</div>
-                    <div className="video-subtext">(video placeholder)</div>
-                  </div>
+                  {clip.video ? (
+                    <video
+                      className="tutorial-video"
+                      src={clip.video}
+                      controls
+                      preload="metadata"
+                    />
+                  ) : (
+                    <div className="video-placeholder">
+                      <div className="video-icon">▶</div>
+                      <div className="video-text">{clip.key} Clip</div>
+                      <div className="video-subtext">(video placeholder)</div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
