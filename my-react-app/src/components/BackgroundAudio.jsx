@@ -10,8 +10,8 @@ import "./BackgroundAudio.css";
 const STORAGE_KEY = "siteMuted";
 
 // 🔧 Tune these
-const GIF_LOOP_MS = 10_000;        // your GIF loop length
-const HIT_M_OFFSET_MS = 900;       
+const GIF_LOOP_MS = 10_000; // your GIF loop length
+const HIT_M_OFFSET_MS = 820; // adjust until it hits exactly when green reaches the "M"
 
 // volumes
 const HOME_BG_INITIAL_VOL = 0.35;
@@ -20,20 +20,21 @@ const OTHER_BG_VOL = 0.35;
 const STING_VOL = 0.85;
 
 export default function BackgroundAudio({ gifStartMs = 0 }) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const bgAudioRef = useRef(null);
   const stingAudioRef = useRef(null);
 
   const stingIntervalRef = useRef(null);
   const firstStingTimeoutRef = useRef(null);
-
-  const location = useLocation();
+  const hasDuckedRef = useRef(false); // tracks if we've reduced home bg volume after first sting
+  const unlockedRef = useRef(false); // tracks if we've passed autoplay restriction via interaction
 
   const [muted, setMuted] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved === "1";
   });
-
-  const isHome = location.pathname === "/";
 
   // Keep audio muted flags synced
   useEffect(() => {
@@ -43,6 +44,39 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
     if (sting) sting.muted = muted;
   }, [muted]);
 
+  // Try to start audio after first user interaction (autoplay policy)
+  useEffect(() => {
+    const bg = bgAudioRef.current;
+    if (!bg) return;
+
+    const tryStart = () => {
+      if (muted) return;
+      bg.play().catch(() => {});
+    };
+
+    const onFirstInteraction = () => {
+      unlockedRef.current = true;
+      tryStart();
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+      window.removeEventListener("touchstart", onFirstInteraction);
+    };
+
+    // attempt once (may be blocked)
+    tryStart();
+
+    // unlock on first interaction
+    window.addEventListener("pointerdown", onFirstInteraction, { passive: true });
+    window.addEventListener("keydown", onFirstInteraction);
+    window.addEventListener("touchstart", onFirstInteraction, { passive: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+      window.removeEventListener("touchstart", onFirstInteraction);
+    };
+  }, [muted, isHome]);
+
   // Background track routing (home vs others)
   useEffect(() => {
     const bg = bgAudioRef.current;
@@ -51,14 +85,23 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
     const desiredSrc = isHome ? homeSound : ambientSound;
     const desiredAbs = new URL(desiredSrc, window.location.href).href;
 
+    // swap track only if changed
     if (bg.src !== desiredAbs) {
       bg.src = desiredSrc;
       bg.currentTime = 0;
+
+      // reset ducking when switching routes
+      hasDuckedRef.current = false;
     }
 
-    // set volume per route (home starts louder, later will be reduced after sting)
-    bg.volume = isHome ? HOME_BG_INITIAL_VOL : OTHER_BG_VOL;
+    // set volume per route
+    if (isHome) {
+      bg.volume = hasDuckedRef.current ? HOME_BG_AFTER_VOL : HOME_BG_INITIAL_VOL;
+    } else {
+      bg.volume = OTHER_BG_VOL;
+    }
 
+    // enforce mute
     bg.muted = muted;
 
     if (muted) {
@@ -66,6 +109,7 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
       return;
     }
 
+    // play (may be blocked until interaction)
     const p = bg.play();
     if (p !== undefined) p.catch(() => {});
   }, [isHome, muted]);
@@ -107,8 +151,11 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
       sting.currentTime = 0;
       sting.play().catch(() => {});
 
-      // after first sting, cut home bg volume in half (keeps playing)
-      if (bg && isHome) bg.volume = HOME_BG_AFTER_VOL;
+      // after FIRST sting, cut home bg volume in half (keeps playing)
+      if (bg && isHome) {
+        hasDuckedRef.current = true;
+        bg.volume = HOME_BG_AFTER_VOL;
+      }
     };
 
     // schedule first sting at the exact offset in the GIF loop
@@ -138,6 +185,21 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
     setMuted((m) => {
       const next = !m;
       localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+
+      // If unmuting, try to start immediately (counts as user interaction)
+      if (!next) {
+        const bg = bgAudioRef.current;
+        bg?.play().catch(() => {});
+      } else {
+        const bg = bgAudioRef.current;
+        const sting = stingAudioRef.current;
+        bg?.pause();
+        if (sting) {
+          sting.pause();
+          sting.currentTime = 0;
+        }
+      }
+
       return next;
     });
   }
