@@ -1,4 +1,4 @@
-.countdown-box{
+/* .countdown-box{
     font-family: Arial, sans-serif;
     text-align: center;
     display: flex;
@@ -39,4 +39,81 @@
     color: #777;
     margin-top: 5px;
     letter-spacing: 1px;
+} */
+
+.download-page {
+    background: radial-gradient(circle at center, #1a0000 0%, #000000 70%);
+    color: #ff3b3b;
+    /* font-family: 'Creepster', cursive, Arial, sans-serif; */
+}
+
+/* Main container */
+.countdown-box{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    flex-direction: column;
+}
+
+.countdown-box p{
+    font-size: 26px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #bbb;
+    /* text-shadow: 0 0 10px #5b0201, 0 0 20px #990000; */
+}
+
+/* Countdown container */
+.countdown {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+    /* border-radius: 8px; */
+    /* background: rgba(20, 0, 0, 0.8);
+    border: 2px solid #660000;
+    box-shadow: 0 0 25px #8b0000; */
+}
+
+/* Each time box */
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Numbers */
+.number {
+    font-size: 55px;
+    font-weight: bold;
+    color: #5b0201;
+    text-shadow: 
+        0 0 2px #ff0000,
+        0 0 15px #990000,
+        0 0 25px #660000;
+}
+
+/* Labels */
+.label {
+    font-size: 18px;
+    color: #bbb;
+    margin-top: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+@keyframes flicker {
+    0% { opacity: 1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 1; }
+    15% { opacity: 0.6; }
+    20% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+.number {
+    animation: flicker 3s infinite;
 }
