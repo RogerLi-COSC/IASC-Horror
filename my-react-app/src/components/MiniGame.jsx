@@ -31,11 +31,11 @@ export default function MiniGame({
   useEffect(() => {
     wrongAudioRef.current = new Audio(wrongSfx);
     wrongAudioRef.current.preload = "auto";
-    wrongAudioRef.current.volume = 0.85;
+    wrongAudioRef.current.volume = 0.15;
 
     completeAudioRef.current = new Audio(completeSfx);
     completeAudioRef.current.preload = "auto";
-    completeAudioRef.current.volume = 0.85;
+    completeAudioRef.current.volume = 0.15;
 
     rotateAudioRef.current = new Audio(rotateSfx);
     rotateAudioRef.current.preload = "auto";

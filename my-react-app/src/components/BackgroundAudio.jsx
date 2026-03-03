@@ -11,7 +11,7 @@ const STORAGE_KEY = "siteMuted";
 
 // 🔧 Tune these
 const GIF_LOOP_MS = 10_000; // your GIF loop length
-const HIT_M_OFFSET_MS = 820; // adjust until it hits exactly when green reaches the "M"
+const HIT_M_OFFSET_MS = 780; // adjust until it hits exactly when green reaches the "M"
 
 // volumes
 const HOME_BG_INITIAL_VOL = 0.35;
