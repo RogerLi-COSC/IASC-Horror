@@ -83,6 +83,11 @@ export default function Navbar() {
                 Download
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/faq" className={linkClass}>
+                FAQ
+              </NavLink>
+            </li>
 
             {/* ✅ Secret file icon appears only if unlocked (this session) */}
             {isSecretUnlocked && (

@@ -14,6 +14,7 @@ import Tutorial from "./pages/Tutorial";
 import Contact from "./pages/Contact";
 import Secret from "./pages/Secret";
 import Footer from "./components/Footer";
+import Faq from "./pages/Faq";
 
 import "./App.css";
 import Download from "./pages/Download";
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/tutorial" element={<Tutorial />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/secret" element={<Secret />} />
+              <Route path="/faq" element={<Faq />} />
               <Route
                 path="/download"
                 element={<Download />}
