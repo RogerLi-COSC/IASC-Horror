@@ -15,15 +15,15 @@ import Contact from "./pages/Contact";
 import Secret from "./pages/Secret";
 import Footer from "./components/Footer";
 import Faq from "./pages/Faq";
+import Download from "./pages/Download";
 
 import "./App.css";
-import Download from "./pages/Download";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    // ✅ Important for Sandcastle hosting under a subpath
+    <BrowserRouter basename="/~rl20wa/IASC">
       <TransitionProvider>
-
         {/* ✅ Background audio (disabled automatically on Home) */}
         <BackgroundAudio />
 
@@ -35,24 +35,21 @@ export default function App() {
 
           <div className="app-shell">
             <PageTransition>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/tutorial" element={<Tutorial />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/secret" element={<Secret />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route
-                path="/download"
-                element={<Download />}
-              />
-            </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/tutorial" element={<Tutorial />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/secret" element={<Secret />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/download" element={<Download />} />
+              </Routes>
             </PageTransition>
+
             <Footer />
           </div>
         </SecretUnlockProvider>
-
       </TransitionProvider>
     </BrowserRouter>
   );
