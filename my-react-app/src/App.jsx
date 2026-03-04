@@ -4,6 +4,8 @@ import TransitionProvider from "./components/TransitionProvider";
 import BloodDrips from "./components/BloodDrips";
 import BackgroundAudio from "./components/BackgroundAudio";
 import PageTransition from "./components/PageTransition";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop"; // ✅ add this
 
 import { SecretUnlockProvider } from "./components/SecretUnlockContext";
 
@@ -13,7 +15,6 @@ import SignUp from "./pages/SignUp";
 import Tutorial from "./pages/Tutorial";
 import Contact from "./pages/Contact";
 import Secret from "./pages/Secret";
-import Footer from "./components/Footer";
 import Faq from "./pages/Faq";
 import Download from "./pages/Download";
 
@@ -21,13 +22,11 @@ import "./App.css";
 
 export default function App() {
   return (
-    // ✅ Important for Sandcastle hosting under a subpath
     <BrowserRouter basename="/~rl20wa/IASC">
       <TransitionProvider>
-        {/* ✅ Background audio (disabled automatically on Home) */}
-        <BackgroundAudio />
+        <ScrollToTop /> {/* ✅ forces top on every route change */}
 
-        {/* Visual effects */}
+        <BackgroundAudio />
         <BloodDrips enabled intervalMs={2200} />
 
         <SecretUnlockProvider>

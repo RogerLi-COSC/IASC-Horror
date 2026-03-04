@@ -4,7 +4,7 @@ import { useSecretUnlock } from "./SecretUnlockContext";
 
 import wrongSfx from "../assets/wrong.mp3";
 import completeSfx from "../assets/complete.mp3";
-import rotateSfx from "../assets/squish.mp3"; // <-- your per-click sound
+import rotateSfx from "../assets/squish.mp3";
 import "./MiniGame.css";
 
 export default function MiniGame({
@@ -14,7 +14,6 @@ export default function MiniGame({
 }) {
   const navigate = useNavigate();
   const { unlockSecret } = useSecretUnlock();
-  const rotateAudioRef = useRef(null);
 
   // each tile is 0/90/180/270
   const [rotations, setRotations] = useState([0, 0, 0, 0]);
@@ -27,6 +26,7 @@ export default function MiniGame({
   // ===== SFX (fast replay)
   const wrongAudioRef = useRef(null);
   const completeAudioRef = useRef(null);
+  const rotateAudioRef = useRef(null);
 
   useEffect(() => {
     wrongAudioRef.current = new Audio(wrongSfx);
@@ -39,32 +39,28 @@ export default function MiniGame({
 
     rotateAudioRef.current = new Audio(rotateSfx);
     rotateAudioRef.current.preload = "auto";
-    rotateAudioRef.current.volume = 0.90; // tweak
+    rotateAudioRef.current.volume = 0.9;
   }, []);
 
-  function playWrong() {
-    const a = wrongAudioRef.current;
+  function playAudio(ref) {
+    const a = ref.current;
     if (!a) return;
     a.pause();
     a.currentTime = 0;
     a.play().catch(() => {});
+  }
+
+  function playWrong() {
+    playAudio(wrongAudioRef);
   }
 
   function playComplete() {
-    const a = completeAudioRef.current;
-    if (!a) return;
-    a.pause();
-    a.currentTime = 0;
-    a.play().catch(() => {});
+    playAudio(completeAudioRef);
   }
 
   function playRotate() {
-  const a = rotateAudioRef.current;
-  if (!a) return;
-  a.pause();
-  a.currentTime = 0;
-  a.play().catch(() => {});
-}
+    playAudio(rotateAudioRef);
+  }
 
   // ✅ forced reset (no button)
   function forceReset() {
@@ -79,13 +75,11 @@ export default function MiniGame({
     // check order click requirement FIRST
     const expectedTile = required[progressIndex];
 
-    // Wrong order → SFX + forced reset + flash
+    // ❌ Wrong order → SFX + forced reset + flash
     if (tileIndex !== expectedTile) {
       playWrong();
-
       setWrong(true);
       forceReset();
-
       window.setTimeout(() => setWrong(false), 450);
       return;
     }
@@ -99,13 +93,20 @@ export default function MiniGame({
     });
 
     const nextIndex = progressIndex + 1;
-    //Puzzle Solved
+
+    // ✅ Puzzle solved
     if (nextIndex >= required.length) {
       setUnlocked(true);
       playComplete();
 
       unlockSecret(); // navbar secret icon appears
-      window.setTimeout(() => navigate(unlockPath), 650);
+
+      window.setTimeout(() => {
+        // ✅ force top BEFORE routing so secret page never appears mid-scroll
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        navigate(unlockPath);
+      }, 650);
+
       return;
     }
 
@@ -147,8 +148,6 @@ export default function MiniGame({
           Progress: <span className="mg-order">{progressIndex}/{required.length}</span>
           {unlocked ? <span className="mg-order"> — UNLOCKED</span> : null}
         </div>
-
-        {/* ✅ removed reset button */}
       </footer>
     </div>
   );
