@@ -1,215 +1,363 @@
 .tutorial {
   min-height: calc(100vh - 90px);
-  padding: 3rem 1.5rem 4rem;
-
-  /* ✅ Use the SAME background as the site (Home) */
+  padding: 2.5rem 1.5rem 4rem;
   background: transparent;
-
-  color: #f2f2f2;
+  color: #f4efea;
 }
 
 .tutorial-wrap {
-  max-width: 1200px;
+  max-width: 1220px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 
+.tutorial-hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 1.75rem;
+  align-items: start;
 }
 
-/* Panels */
-.tutorial-panel {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(120, 0, 0, 0.35);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.4);
-  padding: 1.5rem 1.5rem 1.8rem;
-
-  /* ✅ hard corners */
-  border-radius: 0;
+.tutorial-panel,
+.clip-row {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16, 6, 6, 0.78) 0%,
+      rgba(35, 9, 9, 0.72) 100%
+    );
+  border: 1px solid rgba(145, 20, 20, 0.42);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.42),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  padding: 1.4rem;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Headings */
-.tutorial-title {
-  margin: 0 0 1.2rem;
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: 0.12em;
+.tutorial-panel::before,
+.clip-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 22%
+    );
+}
+
+.panel-header {
+  margin-bottom: 1rem;
+}
+
+.panel-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-}
-
-.tutorial-divider {
-  grid-column: 1 / -1;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 0 18px rgba(120, 0, 0, 0.25);
-}
-
-.tutorial-subtitle {
-  grid-column: 1 / -1;
-  margin: 0.25rem 0 0.6rem;
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  font-size: 1.1rem;
+  color: #d5b7b7;
   opacity: 0.9;
 }
 
-
-/* Video frame */
-.video-frame {
-  background: #d9d9d9;
-  padding: 1.2rem;
-  border: 3px solid #2a0000;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25);
-
-  border-radius: 0;
+.tutorial-title,
+.tutorial-subtitle,
+.control-block-title,
+.clip-title {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-.video-frame.small {
+.tutorial-title {
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  color: #fff4f4;
+}
+
+.tutorial-subtitle {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: #fff0f0;
+}
+
+.panel-copy,
+.clip-caption,
+.quick-control-desc {
+  color: rgba(245, 236, 236, 0.84);
+  line-height: 1.6;
+}
+
+.panel-copy {
+  margin: 0.65rem 0 0;
+  max-width: 62ch;
+}
+
+.video-frame {
+  background:
+    linear-gradient(180deg, #d8d1ca 0%, #bab1aa 100%);
+  border: 3px solid #2a0606;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.22),
+    0 12px 30px rgba(0, 0, 0, 0.24);
   padding: 0.9rem;
 }
 
-.video-placeholder {
-  background: #eee;
+.main-frame {
   aspect-ratio: 16 / 9;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  color: #111;
-  border: 2px dashed #555;
-
-  border-radius: 0;
 }
 
-.video-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+.small-frame {
+  aspect-ratio: 16 / 9;
 }
 
-.video-text {
-  font-size: 1.2rem;
-  font-weight: bold;
+.tutorial-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #000;
+  object-fit: cover;
 }
 
-.video-subtext {
-  font-size: 0.85rem;
-  opacity: 0.7;
+.controls-panel .panel-header {
+  margin-bottom: 1.2rem;
 }
 
-/* Right side controls */
-.controls {
+.controls-layout {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
-  margin-top: 0.25rem;
+  gap: 1.35rem;
 }
 
-.key-row,
-.mouse-row {
+.control-block {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1rem;
+}
+
+.control-block-title {
+  margin-bottom: 0.85rem;
+  font-size: 1rem;
+  color: #f8dede;
+}
+
+.movement-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.wasd-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 58px);
+  gap: 0.55rem;
+}
+
+.keycap,
+.quick-control-key,
+.clip-key {
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  border: 2px solid #2d0808;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.28);
+  color: #fff7f7;
+  text-transform: uppercase;
+}
+
+.keycap {
+  width: 58px;
+  height: 58px;
+  background: linear-gradient(180deg, #8f6b6b 0%, #674242 100%);
+  font-size: 1.18rem;
+}
+
+.keycap.ghost {
+  visibility: hidden;
+}
+
+.movement-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 1rem;
+}
+
+.movement-item {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 0.65rem;
+  color: #f5e9e9;
+  font-size: 0.98rem;
 }
 
-.key {
-  width: 56px;
-  height: 56px;
-  background: #6b4b4b;
-
-  /* ✅ hard corners */
-  border-radius: 0;
-
-  display: grid;
+.movement-letter {
+  display: inline-grid;
   place-items: center;
-
-  font-size: 1.4rem;
-  font-weight: bold;
-  border: 2px solid #2a0000;
-  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.86rem;
+  font-weight: 700;
 }
 
-.key.special {
-  background: #503535;
-}
-
-.key.space {
-  width: 120px;
-  font-size: 1rem;
-  letter-spacing: 0.12em;
-}
-
-.mouse {
-  font-size: 2.2rem;
-}
-
-.key-label {
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
-}
-
-/* Clips section (reverse layout idea) */
-.tutorial-clips {
-  grid-column: 1 / -1;
+.quick-control-list {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 0.8rem;
+}
+
+.quick-control-card {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 0.95rem;
+  align-items: center;
+  padding: 0.8rem;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.quick-control-key {
+  min-height: 58px;
+  padding: 0.7rem 0.55rem;
+  background: linear-gradient(180deg, #6d4747 0%, #4d2f2f 100%);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.quick-control-key.mouse-key {
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+}
+
+.quick-control-key.special-key {
+  background: linear-gradient(180deg, #784747 0%, #522c2c 100%);
+}
+
+.quick-control-label {
+  font-family: Georgia, "Times New Roman", serif;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 1rem;
+  color: #fff2f2;
+  margin-bottom: 0.18rem;
+}
+
+.quick-control-desc {
+  font-size: 0.95rem;
+}
+
+.tutorial-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 14%,
+    rgba(140, 18, 18, 0.55) 50%,
+    rgba(255, 255, 255, 0.18) 86%,
+    transparent 100%
+  );
+}
+
+.action-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.action-copy {
+  margin: 0;
+}
+
+.tutorial-clips {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
 }
 
 .clip-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.6rem;
-  align-items: start;
-
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(120, 0, 0, 0.35);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
-  padding: 1.2rem 1.2rem 1.35rem;
-
-  border-radius: 0;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 1.1rem;
+  align-items: center;
 }
 
-.clip-keyline {
-  display: flex;
+.clip-info {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 1rem;
   align-items: center;
-  gap: 1.1rem;
+}
+
+.clip-key {
+  width: 82px;
+  height: 82px;
+  background: linear-gradient(180deg, #7f4b4b 0%, #572d2d 100%);
+  font-size: 1.5rem;
 }
 
 .clip-title {
-  font-family: Georgia, "Times New Roman", serif;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff0f0;
 }
 
 .clip-caption {
-  margin-top: 0.35rem;
-  opacity: 0.85;
-  letter-spacing: 0.02em;
+  margin: 0.55rem 0 0;
+  font-size: 0.98rem;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .tutorial-wrap {
+.clip-video {
+  min-width: 0;
+}
+
+@media (max-width: 980px) {
+  .tutorial-hero {
     grid-template-columns: 1fr;
   }
 
   .clip-row {
     grid-template-columns: 1fr;
+    align-items: start;
   }
 }
 
-.tutorial-video{
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: inherit;
-  object-fit: cover; /* or contain if you don’t want cropping */
-}
+@media (max-width: 640px) {
+  .tutorial {
+    padding: 1.4rem 1rem 3rem;
+  }
 
-.tutorial-video.main{
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: inherit;
-  object-fit: cover; /* or contain */
+  .tutorial-panel,
+  .clip-row {
+    padding: 1rem;
+  }
+
+  .movement-card {
+    grid-template-columns: 1fr;
+  }
+
+  .wasd-grid {
+    justify-content: start;
+  }
+
+  .movement-legend {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-control-card {
+    grid-template-columns: 78px 1fr;
+  }
+
+  .clip-info {
+    grid-template-columns: 68px 1fr;
+  }
+
+  .clip-key {
+    width: 68px;
+    height: 68px;
+    font-size: 1.25rem;
+  }
 }

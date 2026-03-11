@@ -1,106 +1,124 @@
 import "./Contact.css";
 
 const gameTeam = [
-  { name: "Noah Serpa", role: "ART LEAD / PROGRAMMER" },
-  { name: "Ya’el Lederman", role: "NARRATIVE LEAD / AUDIO DESIGNER" },
-  { name: "Julia Book", role: "AUDIO LEAD / NARRATIVE TEAM" },
-  { name: "Stanlee Castaneda", role: "3D ARTIST / PROGRAMMER" },
-  { name: "Matteo Monteleone", role: "TECH LEAD / DESIGN LEAD" },
-  { name: "Grayson Lambert", role: "3D ARTIST / PROGRAMMER" },
-  { name: "Carter Sentance", role: "3D ARTIST / DESIGNER" },
-  { name: "Abdullah Sheikh", role: "3D ARTIST / PROGRAMMER" },
-  { name: "Amelia Gordon", role: "CHARACTER ARTIST / CONCEPT ARTIST" },
-  { name: "Ekraj Singh Narang", role: "3D ARTIST / AUDIO DESIGNER" },
-  { name: "Cadence Delia", role: "3D ARTIST / PROGRAMMER" },
+  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team" },
+  { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team" },
+  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team" },
+  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team" },
+  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team" },
+  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team" },
+  { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team" },
+  { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team" },
+  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team" },
+  { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team" },
+  { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team" },
 ];
 
 const webTeam = [
-  { name: "Megan Smith", role: "DESIGN & MARKETING" },
-  { name: "Lauren Berlettano", role: "DESIGN, MARKETING, & MANAGEMENT" },
-  { name: "Kylan Joint", role: "VIDEO PRODUCTION & MARKETING" },
-  { name: "Kylie Schipper", role: "DESIGN & MARKETING" },
-  { name: "Tomas Galvez", role: "DESIGN & MANAGEMENT" },
-  { name: "Roger Li", role: "CODING" },
-  { name: "Dimple Mistry", role: "DESIGN" },
-  { name: "Danielle Clapiz", role: "DESIGN & CODING" },
-  { name: "Moztabir Islam", role: "CODING" },
+  { name: "Megan Smith", role: "Design & Marketing", title: "Web Team" },
+  { name: "Lauren Berlettano", role: "Design, Marketing, & Management", title: "Web Team" },
+  { name: "Kylan Joint", role: "Video Production & Marketing", title: "Web Team" },
+  { name: "Kylie Schipper", role: "Design & Marketing", title: "Web Team" },
+  { name: "Tomas Galvez", role: "Design & Management", title: "Web Team" },
+  { name: "Roger Li", role: "Coding", title: "Web Team" },
+  { name: "Dimple Mistry", role: "Design", title: "Web Team" },
+  { name: "Danielle Clapiz", role: "Design & Coding", title: "Web Team" },
+  { name: "Moztabir Islam", role: "Coding", title: "Web Team" },
 ];
 
-function Avatar({ seed }) {
-  // Simple placeholder avatar circle with initials
-  const initials = seed
+function PhotoSlot({ name }) {
+  const initials = name
     .split(" ")
     .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
+    .map((part) => part[0]?.toUpperCase())
     .join("");
 
-  return <div className="avatar">{initials}</div>;
-}
-
-function Member({ name, role }) {
   return (
-    <div className="member">
-      <Avatar seed={name} />
-      <div className="member-text">
-        <div className="member-name">
-          <span className="label">Name:</span> {name}
-        </div>
-        <div className="member-role">
-          <span className="label">Role:</span> {role}
-        </div>
-      </div>
+    <div className="contact-photo-slot" aria-label={`${name} profile placeholder`}>
+      <div className="contact-photo-inner">{initials}</div>
+      <div className="contact-photo-caption">PHOTO</div>
     </div>
   );
 }
 
-function TeamSection({ title, left, right }) {
+function MemberCard({ name, role, title }) {
   return (
-    <section className="team-section">
-      <div className="team-grid">
-        <div className="team-col">
-          {left.map((p) => (
-            <Member key={p.name} {...p} />
-          ))}
+    <article className="member-card">
+      <PhotoSlot name={name} />
+
+      <div className="member-info">
+        <div className="member-row">
+          <span className="member-label">Name</span>
+          <div className="member-value member-name">{name}</div>
         </div>
 
-        <div className="team-center">
-          <div className="team-oval">
-            {title.split(" ").map((w, i) => (
-              <div key={i}>{w}</div>
-            ))}
-          </div>
+        <div className="member-row">
+          <span className="member-label">Role</span>
+          <div className="member-value member-role">{role}</div>
         </div>
 
-        <div className="team-col">
-          {right.map((p) => (
-            <Member key={p.name} {...p} />
-          ))}
+        <div className="member-row">
+          <span className="member-label">Division</span>
+          <div className="member-value member-division">{title}</div>
         </div>
+      </div>
+    </article>
+  );
+}
+
+function TeamSection({ heading, subheading, members }) {
+  return (
+    <section className="contact-section">
+      <div className="contact-section-bar">{heading}</div>
+      <p className="contact-section-subtext">{subheading}</p>
+
+      <div className="member-grid">
+        {members.map((member) => (
+          <MemberCard key={`${heading}-${member.name}`} {...member} />
+        ))}
       </div>
     </section>
   );
 }
 
 export default function Contact() {
-  // split arrays into left/right columns to mimic the design
-  const split = (arr) => {
-    const mid = Math.ceil(arr.length / 2);
-    return [arr.slice(0, mid), arr.slice(mid)];
-  };
-
-  const [gameLeft, gameRight] = split(gameTeam);
-  const [webLeft, webRight] = split(webTeam);
-
   return (
     <main className="contact-page">
-      <div className="contact-paper">
-        <TeamSection title="Meet Game the Team" left={gameLeft} right={gameRight} />
+      <section className="contact-sheet">
+        <header className="contact-header">
+          <div className="contact-stamp">ARCHIVED STAFF FILE</div>
 
-        <div className="blood-divider" aria-hidden="true" />
+          <div className="contact-title">PROJECT CONTACT DIRECTORY</div>
 
-        <TeamSection title="Meet the Web Team" left={webLeft} right={webRight} />
+          <div className="contact-disclaimer">
+            <span className="contact-disclaimer-label">Notice:</span>
+            <span className="contact-disclaimer-text">
+              This page contains the listed contributors behind the game and website
+              presentation. Designed in an archived patient-record style.
+            </span>
+          </div>
 
-      </div>
+          <p className="contact-intro">
+            Browse the people behind the horror project. This layout keeps the
+            eerie record-file look while making team names, roles, and profile
+            spaces easier to scan and read.
+          </p>
+        </header>
+
+        <TeamSection
+          heading="GAME DEVELOPMENT TEAM"
+          subheading="Core contributors involved in art, audio, design, narrative, and programming for the game."
+          members={gameTeam}
+        />
+
+        <div className="contact-divider" aria-hidden="true" />
+
+        <TeamSection
+          heading="WEB DEVELOPMENT TEAM"
+          subheading="Contributors responsible for design, marketing, coding, management, and presentation."
+          members={webTeam}
+        />
+      </section>
     </main>
   );
 }

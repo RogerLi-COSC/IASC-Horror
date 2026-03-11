@@ -21,6 +21,7 @@ const WORDS = [
 ];
 
 const GRID_SIZE = 14;
+const MAX_GENERATION_ATTEMPTS = 150;
 
 const DIRECTIONS = [
   [0, 1],   // horizontal
@@ -46,58 +47,137 @@ function cellKey(row, col) {
   return `${row}-${col}`;
 }
 
+function buildPlacementCells(word, row, col, dr, dc) {
+  return Array.from({ length: word.length }, (_, i) => ({
+    row: row + dr * i,
+    col: col + dc * i,
+  }));
+}
+
 function canPlace(board, word, row, col, dr, dc) {
   for (let i = 0; i < word.length; i += 1) {
     const r = row + dr * i;
     const c = col + dc * i;
 
     if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) return false;
-    if (board[r][c] !== "" && board[r][c] !== word[i]) return false;
+
+    // No overlap at all.
+    if (board[r][c] !== "") return false;
   }
 
   return true;
 }
 
-function placeWord(board, solutionMap, word) {
-  const dirs = shuffle(DIRECTIONS);
+function createAnchors(count) {
+  const cols = Math.ceil(Math.sqrt(count));
+  const rows = Math.ceil(count / cols);
+  const anchors = [];
+
+  for (let row = 0; row < rows; row += 1) {
+    for (let col = 0; col < cols; col += 1) {
+      anchors.push({
+        row: ((row + 0.5) * GRID_SIZE) / rows - 0.5,
+        col: ((col + 0.5) * GRID_SIZE) / cols - 0.5,
+      });
+    }
+  }
+
+  return shuffle(anchors).slice(0, count);
+}
+
+function getNeighborDensity(board, cells) {
+  const candidateSet = new Set(cells.map((cell) => cellKey(cell.row, cell.col)));
+  const seenNeighbors = new Set();
+  let density = 0;
+
+  cells.forEach(({ row, col }) => {
+    for (let r = row - 1; r <= row + 1; r += 1) {
+      for (let c = col - 1; c <= col + 1; c += 1) {
+        if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) continue;
+
+        const key = cellKey(r, c);
+        if (candidateSet.has(key) || seenNeighbors.has(key)) continue;
+
+        if (board[r][c] !== "") {
+          density += 1;
+          seenNeighbors.add(key);
+        }
+      }
+    }
+  });
+
+  return density;
+}
+
+function scorePlacement(board, cells, anchor) {
+  const first = cells[0];
+  const last = cells[cells.length - 1];
+  const midRow = (first.row + last.row) / 2;
+  const midCol = (first.col + last.col) / 2;
+
+  const anchorDistance = Math.hypot(midRow - anchor.row, midCol - anchor.col);
+  const neighborDensity = getNeighborDensity(board, cells);
+
+  return anchorDistance * 4 + neighborDensity * 3 + Math.random() * 0.35;
+}
+
+function choosePlacement(board, word, anchor) {
+  const candidates = [];
   const versions = shuffle([word, reverseWord(word)]);
+  const directions = shuffle(DIRECTIONS);
 
   for (const version of versions) {
-    for (const [dr, dc] of dirs) {
+    for (const [dr, dc] of directions) {
       for (let row = 0; row < GRID_SIZE; row += 1) {
         for (let col = 0; col < GRID_SIZE; col += 1) {
           if (!canPlace(board, version, row, col, dr, dc)) continue;
 
-          const cells = [];
+          const cells = buildPlacementCells(version, row, col, dr, dc);
 
-          for (let i = 0; i < version.length; i += 1) {
-            const r = row + dr * i;
-            const c = col + dc * i;
-            board[r][c] = version[i];
-            cells.push({ row: r, col: c });
-          }
-
-          solutionMap[word] = cells;
-          return true;
+          candidates.push({
+            version,
+            cells,
+            score: scorePlacement(board, cells, anchor),
+          });
         }
       }
     }
   }
 
-  return false;
+  if (!candidates.length) return null;
+
+  candidates.sort((a, b) => a.score - b.score);
+
+  // Keep boards varied, but still choose from the best placements.
+  const topSlice = candidates.slice(0, Math.min(6, candidates.length));
+  return topSlice[Math.floor(Math.random() * topSlice.length)];
 }
 
-function makeBoard() {
+function applyPlacement(board, solutionMap, originalWord, placement) {
+  placement.cells.forEach((cell, index) => {
+    board[cell.row][cell.col] = placement.version[index];
+  });
+
+  solutionMap[originalWord] = placement.cells;
+}
+
+function generateBoard() {
   const board = Array.from({ length: GRID_SIZE }, () =>
     Array(GRID_SIZE).fill("")
   );
 
   const solutionMap = {};
+  const sortedWords = [...WORDS].sort((a, b) => b.length - a.length);
+  const anchors = createAnchors(sortedWords.length);
 
-  for (const word of [...WORDS].sort((a, b) => b.length - a.length)) {
-    if (!placeWord(board, solutionMap, word)) {
-      return makeBoard();
-    }
+  for (let i = 0; i < sortedWords.length; i += 1) {
+    const word = sortedWords[i];
+    const anchor = anchors[i];
+    const placement = choosePlacement(board, word, anchor);
+
+    if (!placement) return null;
+
+    applyPlacement(board, solutionMap, word, placement);
   }
 
   for (let row = 0; row < GRID_SIZE; row += 1) {
@@ -109,6 +189,15 @@ function makeBoard() {
   }
 
   return { board, solutionMap };
+}
+
+function makeBoard() {
+  for (let attempt = 0; attempt < MAX_GENERATION_ATTEMPTS; attempt += 1) {
+    const generated = generateBoard();
+    if (generated) return generated;
+  }
+
+  throw new Error("Unable to build a valid word-search board.");
 }
 
 function buildPath(start, end) {
