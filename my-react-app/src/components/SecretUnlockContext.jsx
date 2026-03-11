@@ -1,18 +1,50 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
+const SECRET_ONE_KEY = "comatose-secret-1-unlocked";
+const SECRET_TWO_KEY = "comatose-secret-2-unlocked";
+
 const SecretUnlockContext = createContext(null);
 
 export function SecretUnlockProvider({ children }) {
-  // ✅ In-memory only: refresh = resets to false
-  const [isSecretUnlocked, setIsSecretUnlocked] = useState(false);
+  const [isSecretUnlocked, setIsSecretUnlocked] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(SECRET_ONE_KEY) === "true"
+      || localStorage.getItem(SECRET_TWO_KEY) === "true";
+  });
+
+  const [isSecretTwoUnlocked, setIsSecretTwoUnlocked] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(SECRET_TWO_KEY) === "true";
+  });
+
+  function unlockSecret() {
+    setIsSecretUnlocked(true);
+    localStorage.setItem(SECRET_ONE_KEY, "true");
+  }
+
+  function unlockSecretTwo() {
+    setIsSecretUnlocked(true);
+    setIsSecretTwoUnlocked(true);
+    localStorage.setItem(SECRET_ONE_KEY, "true");
+    localStorage.setItem(SECRET_TWO_KEY, "true");
+  }
+
+  function resetSecrets() {
+    setIsSecretUnlocked(false);
+    setIsSecretTwoUnlocked(false);
+    localStorage.removeItem(SECRET_ONE_KEY);
+    localStorage.removeItem(SECRET_TWO_KEY);
+  }
 
   const value = useMemo(
     () => ({
       isSecretUnlocked,
-      unlockSecret: () => setIsSecretUnlocked(true),
-      lockSecret: () => setIsSecretUnlocked(false),
+      isSecretTwoUnlocked,
+      unlockSecret,
+      unlockSecretTwo,
+      resetSecrets,
     }),
-    [isSecretUnlocked]
+    [isSecretUnlocked, isSecretTwoUnlocked]
   );
 
   return (
@@ -23,9 +55,11 @@ export function SecretUnlockProvider({ children }) {
 }
 
 export function useSecretUnlock() {
-  const ctx = useContext(SecretUnlockContext);
-  if (!ctx) {
-    throw new Error("useSecretUnlock must be used inside <SecretUnlockProvider />");
+  const context = useContext(SecretUnlockContext);
+
+  if (!context) {
+    throw new Error("useSecretUnlock must be used inside SecretUnlockProvider");
   }
-  return ctx;
+
+  return context;
 }

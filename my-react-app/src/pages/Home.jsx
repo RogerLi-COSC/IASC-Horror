@@ -1,5 +1,3 @@
-import logo from "../assets/logo2.png";
-// import animated_logo from "../assets/animated_logo.gif";
 import { useState } from "react";
 import animated_logo from "../assets/Logo_Comatose.gif";
 
@@ -9,7 +7,6 @@ import p3 from "../assets/puzzle3.png";
 import p4 from "../assets/puzzle4.png";
 
 import MiniGame from "../components/MiniGame";
-import BackgroundAudio from "../components/BackgroundAudio"; // ✅ add this
 import "./Home.css";
 
 export default function Home() {
@@ -17,15 +14,12 @@ export default function Home() {
 
   return (
     <main className="home">
-      {/* ✅ provide gifStartMs so audio can sync to the GIF */}
-      <BackgroundAudio gifStartMs={gifStartMs} />
-
       <section className="home-hero">
         <img
           className="home-logo"
           src={animated_logo}
           alt="Comatose"
-          onLoad={() => setGifStartMs(Date.now())} // ✅ start sync here
+          onLoad={() => setGifStartMs(Date.now())}
         />
         <p className="home-tagline">The nightmare hasn’t ended.</p>
       </section>
@@ -35,6 +29,7 @@ export default function Home() {
           images={[p4, p3, p1, p2]}
           requiredOrder={[1, 2, 2, 3, 3, 3, 4]}
           unlockPath="/secret"
+          gifStartMs={gifStartMs}
         />
       </section>
     </main>

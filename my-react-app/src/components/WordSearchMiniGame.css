@@ -1,0 +1,227 @@
+.ws-wrap {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(90deg, rgba(12, 12, 12, 0.94), rgba(24, 24, 24, 0.94));
+  border: 1px solid rgba(110, 0, 0, 0.55);
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 0, 0, 0.07);
+  text-align: left;
+}
+
+.ws-header {
+  margin-bottom: 1rem;
+}
+
+.ws-title {
+  margin: 0;
+  color: #f1eded;
+  font-size: clamp(1.55rem, 3vw, 2.7rem);
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ws-sub {
+  margin: 0.75rem 0 0;
+  color: rgba(230, 225, 220, 0.78);
+  line-height: 1.55;
+  font-size: 1rem;
+}
+
+.ws-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 1rem;
+  flex-wrap: wrap;
+}
+
+.ws-progress {
+  color: rgba(230, 225, 220, 0.84);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.ws-progress span {
+  color: #ff5050;
+}
+
+.ws-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ws-reset {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.6);
+  color: #efe8e2;
+  padding: 0.8rem 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ws-reset:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: 0 0 16px rgba(120, 0, 0, 0.25);
+}
+
+.ws-solve {
+  border-color: rgba(255, 70, 70, 0.35);
+  box-shadow: 0 0 14px rgba(120, 0, 0, 0.18);
+}
+
+.ws-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.ws-grid-wrap {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ws-grid {
+  display: grid;
+  width: 100%;
+  gap: 0.3rem;
+  padding: 1rem;
+  background: linear-gradient(90deg, rgba(28, 28, 28, 0.96), rgba(20, 20, 20, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.ws-cell {
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #f3f3f3;
+  font-size: clamp(0.82rem, 1.15vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 120ms ease,
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.ws-cell:hover {
+  transform: scale(1.04);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.ws-cell.is-selected {
+  background: rgba(255, 0, 0, 0.18);
+  border-color: rgba(255, 80, 80, 0.45);
+}
+
+.ws-cell.is-found {
+  color: #ff3f3f;
+  text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+}
+
+.ws-status {
+  margin: 0.9rem 0 0;
+  color: rgba(230, 225, 220, 0.76);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.ws-sidebar {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.ws-sidebar-title {
+  margin: 0 0 1rem;
+  color: #f1eded;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.ws-word-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ws-word {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(230, 225, 220, 0.86);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ws-word span {
+  font-weight: 700;
+}
+
+.ws-word em {
+  font-style: normal;
+  font-size: 0.72rem;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.ws-word.is-found {
+  color: #ff4a4a;
+}
+
+.ws-word.is-found em {
+  opacity: 1;
+}
+
+@media (max-width: 1100px) {
+  .ws-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .ws-wrap {
+    padding: 1rem;
+  }
+
+  .ws-grid {
+    gap: 0.2rem;
+    padding: 0.75rem;
+  }
+
+  .ws-cell {
+    font-size: clamp(0.72rem, 2.5vw, 1rem);
+  }
+
+  .ws-title {
+    font-size: clamp(1.3rem, 7vw, 2rem);
+  }
+}

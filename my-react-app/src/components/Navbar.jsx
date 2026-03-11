@@ -1,11 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo2.png";
 import "./Navbar.css";
 
 import { useSecretUnlock } from "./SecretUnlockContext";
 
 function FileIcon() {
-  // simple “2000s file” SVG (no rounded corners)
   return (
     <svg
       className="secret-file-icon"
@@ -37,20 +37,49 @@ function FileIcon() {
 }
 
 export default function Navbar() {
-  // ✅ session-only unlock state (refresh clears it)
-  const { isSecretUnlocked } = useSecretUnlock();
+  const { isSecretUnlocked, isSecretTwoUnlocked } = useSecretUnlock();
+  const [isSecretMenuOpen, setIsSecretMenuOpen] = useState(false);
+  const secretMenuRef = useRef(null);
+  const location = useLocation();
 
   const linkClass = ({ isActive }) => `navlink ${isActive ? "active" : ""}`;
+  const isSecretAreaActive =
+    location.pathname === "/secret" || location.pathname === "/secret-2";
+
+  useEffect(() => {
+    setIsSecretMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (
+        secretMenuRef.current &&
+        !secretMenuRef.current.contains(event.target)
+      ) {
+        setIsSecretMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, []);
+
+  function toggleSecretMenu() {
+    setIsSecretMenuOpen((prev) => !prev);
+  }
 
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        {/* Left: logo */}
         <NavLink to="/" className="nav-brand" aria-label="Go to Home">
           <img className="brand-logo" src={logo} alt="Comatose" />
         </NavLink>
 
-        {/* Center: links */}
         <nav aria-label="Primary">
           <ul className="navbar-links">
             <li>
@@ -89,25 +118,73 @@ export default function Navbar() {
               </NavLink>
             </li>
 
-            {/* ✅ Secret file icon appears only if unlocked (this session) */}
             {isSecretUnlocked && (
-              <li className="secret-file-li">
-                <NavLink
-                  to="/secret"
-                  className={({ isActive }) =>
-                    `navlink secret-file-link ${isActive ? "active" : ""}`
-                  }
-                  title="Open Secret File"
-                  aria-label="Open Secret File"
-                >
-                  <FileIcon />
-                </NavLink>
+              <li
+                className={`secret-file-li ${isSecretMenuOpen ? "is-open" : ""}`}
+                ref={secretMenuRef}
+              >
+                {!isSecretTwoUnlocked ? (
+                  <NavLink
+                    to="/secret"
+                    className={({ isActive }) =>
+                      `navlink secret-file-link ${isActive ? "active" : ""}`
+                    }
+                    title="Open Secret File"
+                    aria-label="Open Secret File"
+                  >
+                    <FileIcon />
+                  </NavLink>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className={`navlink secret-file-link secret-file-button ${
+                        isSecretAreaActive ? "active" : ""
+                      }`}
+                      title="Open Secret Files"
+                      aria-label="Open Secret Files"
+                      aria-haspopup="menu"
+                      aria-expanded={isSecretMenuOpen}
+                      onClick={toggleSecretMenu}
+                    >
+                      <FileIcon />
+                    </button>
+
+                    <div
+                      className={`secret-dropdown ${
+                        isSecretMenuOpen ? "is-open" : ""
+                      }`}
+                      role="menu"
+                    >
+                      <NavLink
+                        to="/secret"
+                        role="menuitem"
+                        className={({ isActive }) =>
+                          `secret-dropdown-link ${isActive ? "active" : ""}`
+                        }
+                        onClick={() => setIsSecretMenuOpen(false)}
+                      >
+                        Secret Page 01
+                      </NavLink>
+
+                      <NavLink
+                        to="/secret-2"
+                        role="menuitem"
+                        className={({ isActive }) =>
+                          `secret-dropdown-link ${isActive ? "active" : ""}`
+                        }
+                        onClick={() => setIsSecretMenuOpen(false)}
+                      >
+                        Secret Page 02
+                      </NavLink>
+                    </div>
+                  </>
+                )}
               </li>
             )}
           </ul>
         </nav>
 
-        {/* Right spacer to keep center alignment */}
         <div className="nav-right-spacer" />
       </div>
     </header>

@@ -1,5 +1,5 @@
 .home {
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - var(--nav-h));
   padding: 3rem 1.5rem 4rem;
   color: #e6e1dc;
 

@@ -1,3 +1,7 @@
+:root {
+  --nav-h: 90px;
+}
+
 /* full-width app */
 #root {
   width: 100%;
@@ -8,7 +12,7 @@
 
 /* content area under fixed navbar */
 .app-shell {
-  padding-top: 64px; /* navbar height */
+  padding-top: var(--nav-h);
   min-height: 100vh;
 }
 

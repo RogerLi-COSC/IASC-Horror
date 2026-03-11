@@ -1,4 +1,5 @@
 import "./Secret.css";
+import WordSearchMiniGame from "../components/WordSearchMiniGame";
 
 export default function Secret() {
   return (
@@ -10,49 +11,55 @@ export default function Secret() {
           <br />
           <span className="secret-sub">A new fear has noticed you.</span>
         </p>
-        <div className="secret-box">
-          {/* [ secret content goes here ] */}
+
+        <div className="secret-box secret-cast">
           <section>
             <ul>
               <li><h1>OMAR KUTAY</h1></li>
               <li><p>Age: 17</p></li>
-              <li><p>Height: 6'1</p></li>
-              <li><p>Description: Plays on river fork high football team, Jock</p></li>
+              <li><p>Height: 6&apos;1</p></li>
+              <li><p>Description: Plays on River Fork High football team, jock.</p></li>
             </ul>
           </section>
+
           <section>
             <ul>
               <li><h1>LOGAN SANDERS</h1></li>
               <li><p>Age: 16</p></li>
-              <li><p>Height: 5'8</p></li>
-              <li><p>Description: Wears glasses, suspenders, stripped t-shirt</p></li>
+              <li><p>Height: 5&apos;8</p></li>
+              <li><p>Description: Wears glasses, suspenders, striped t-shirt.</p></li>
             </ul>
           </section>
+
           <section>
             <ul>
               <li><h1>SASHA COWEN</h1></li>
               <li><p>Age: 17</p></li>
-              <li><p>Height: 5'5</p></li>
-              <li><p>Description: The writer, pencil on hand, smart</p></li>
+              <li><p>Height: 5&apos;5</p></li>
+              <li><p>Description: The writer. Pencil on hand. Too smart for comfort.</p></li>
             </ul>
           </section>
+
           <section>
             <ul>
               <li><h1>ZOEY MALANO</h1></li>
               <li><p>Age: 17</p></li>
-              <li><p>Height: 5'6</p></li>
-              <li><p>Description: Popular, Dating Omar, Only cares about herself</p></li>
+              <li><p>Height: 5&apos;6</p></li>
+              <li><p>Description: Popular, dating Omar, only cares about herself.</p></li>
             </ul>
           </section>
+
           <section>
             <ul>
               <li><h1>NOAH DHAVALE</h1></li>
               <li><p>Age: 17</p></li>
-              <li><p>Height: 5'11</p></li>
-              <li><p>Description: Class clown, Drug addict, Dark clothing</p></li>
+              <li><p>Height: 5&apos;11</p></li>
+              <li><p>Description: Class clown, drug addict, dark clothing.</p></li>
             </ul>
           </section>
         </div>
+
+        <WordSearchMiniGame unlockPath="/secret-2" />
       </div>
     </main>
   );

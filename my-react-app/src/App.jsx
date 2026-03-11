@@ -5,7 +5,8 @@ import BloodDrips from "./components/BloodDrips";
 import BackgroundAudio from "./components/BackgroundAudio";
 import PageTransition from "./components/PageTransition";
 import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop"; // ✅ add this
+import ScrollToTop from "./components/ScrollToTop";
+import SecretTwo from "./pages/Secret-2";
 
 import { SecretUnlockProvider } from "./components/SecretUnlockContext";
 
@@ -24,7 +25,7 @@ export default function App() {
   return (
     <BrowserRouter basename="/~rl20wa/IASC">
       <TransitionProvider>
-        <ScrollToTop /> {/* ✅ forces top on every route change */}
+        <ScrollToTop />
 
         <BackgroundAudio />
         <BloodDrips enabled intervalMs={2200} />
@@ -41,6 +42,7 @@ export default function App() {
                 <Route path="/tutorial" element={<Tutorial />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/secret" element={<Secret />} />
+                <Route path="/secret-2" element={<SecretTwo />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/download" element={<Download />} />
               </Routes>
