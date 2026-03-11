@@ -29,22 +29,22 @@ export default function Download() {
         <div className="countdown-box">
           {/* [ download content goes here ] */}
             <p>Time remaining until the game release</p>
-            <div class="countdown">
-                <div class="time-box">
-                    <div id="days" class="number">00</div>
-                    <div class="label">Days</div>
+            <div className="countdown">
+                <div className="time-box">
+                    <div id="days" className="number">00</div>
+                    <div className="label">Days</div>
                 </div>
-                <div class="time-box">
-                    <div id="hours" class="number">00</div>
-                    <div class="label">Hours</div>
+                <div className="time-box">
+                    <div id="hours" className="number">00</div>
+                    <div className="label">Hours</div>
                 </div>
-                <div class="time-box">
-                    <div id="minutes" class="number">00</div>
-                    <div class="label">Minutes</div>
+                <div className="time-box">
+                    <div id="minutes" className="number">00</div>
+                    <div className="label">Minutes</div>
                 </div>
-                <div class="time-box">
-                    <div id="seconds" class="number">00</div>
-                    <div class="label">Seconds</div>
+                <div className="time-box">
+                    <div id="seconds" className="number">00</div>
+                    <div className="label">Seconds</div>
                 </div>
             </div>
         </div>
