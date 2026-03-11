@@ -1,6 +1,11 @@
 import { useEffect } from "react";
-import "./Secret.css";
+import "./Secret-2.css";
 import { useSecretUnlock } from "../components/SecretUnlockContext";
+
+// Replace these with your actual poster file names
+import halifordPoster from "../assets/posters/haliford-poster.jpg";
+import morrowPoster from "../assets/posters/dr-morrow-poster.jpg";
+import lauriePoster from "../assets/posters/laurie-grace-poster.jpg";
 
 export default function SecretTwo() {
   const { unlockSecretTwo } = useSecretUnlock();
@@ -9,37 +14,51 @@ export default function SecretTwo() {
     unlockSecretTwo();
   }, [unlockSecretTwo]);
 
-  return (
-    <main className="secret-page">
-      <div className="secret-card">
-        <h1>YOU FOUND IT.</h1>
-        <p>
-          <br />
-          <span className="secret-sub">A new fear has noticed you.</span>
-        </p>
+  const posters = [
+    {
+      id: "haliford",
+      src: halifordPoster,
+      alt: "Haliford poster",
+      theme: "bronze",
+    },
+    {
+      id: "morrow",
+      src: morrowPoster,
+      alt: "Dr. Elias Morrow poster",
+      theme: "dark",
+    },
+    {
+      id: "laurie",
+      src: lauriePoster,
+      alt: "Laurie Grace poster",
+      theme: "light",
+    },
+  ];
 
-        <div className="secret-box">
-          <section>
-            <h1>Haliford town Storyline</h1>
-            <p>
-              Haliford was once a quiet lakeside town in the early 2000s ; the
-              kind of place where everyone knew each other and nothing ever
-              happened.
-            </p>
-            <p>Until it did.</p>
-            <p>
-              In 2003, Haliford General Hospital partially shut down after a fire
-              in the psychiatric wing. Official reports blamed faulty wiring.
-              Unofficially, locals whispered about screaming that lasted long
-              after the alarms stopped.
-            </p>
-            <p>
-              Soon after the fire, teenagers began disappearing, search parties
-              found nothing, police reports were quietly closed, and the
-              hospital&apos;s lower level was permanently sealed.
-            </p>
-          </section>
-        </div>
+  return (
+    <main className="secret2-page">
+      <div className="secret2-shell">
+        <header className="secret2-hero">
+          <p className="secret2-kicker">Second Secret Page</p>
+          <h1 className="secret2-title">Story Lines</h1>
+        </header>
+
+        <section className="secret2-gallery">
+          {posters.map((poster) => (
+            <article
+              key={poster.id}
+              className={`secret2-poster-card secret2-poster-card--${poster.theme}`}
+            >
+              <div className="secret2-poster-frame">
+                <img
+                  src={poster.src}
+                  alt={poster.alt}
+                  className="secret2-poster-image"
+                />
+              </div>
+            </article>
+          ))}
+        </section>
       </div>
     </main>
   );
