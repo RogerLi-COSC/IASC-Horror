@@ -3,9 +3,9 @@ import "./Secret-2.css";
 import { useSecretUnlock } from "../components/SecretUnlockContext";
 
 // Replace these with your actual poster file names
-import halifordPoster from "../assets/posters/haliford-poster.jpg";
-import morrowPoster from "../assets/posters/dr-morrow-poster.jpg";
-import lauriePoster from "../assets/posters/laurie-grace-poster.jpg";
+import halifordPoster from "../assets/Poster1.png";
+import morrowPoster from "../assets/Poster2.png";
+import lauriePoster from "../assets/Poster3.png";
 
 export default function SecretTwo() {
   const { unlockSecretTwo } = useSecretUnlock();
