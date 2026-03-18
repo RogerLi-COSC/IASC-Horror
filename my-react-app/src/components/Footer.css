@@ -55,3 +55,7 @@
   color: #ffffff;
   font-weight: 600;
 }
+
+.footer-section a:hover{
+  color: black;
+}

@@ -14,7 +14,7 @@ export default function Footer() {
 
         <div className="footer-section">
           <h2 className="footer-title">Social Media</h2>
-          <p><strong>TikTok:</strong> @comatose2025</p>
+          <p><strong>TikTok:</strong><a href="https://www.tiktok.com/@comatose2025?is_from_webapp=1&sender_device=pc" target="_blank"> @comatose2025</a></p>
         </div>
 
       </div>
