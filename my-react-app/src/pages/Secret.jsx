@@ -14,6 +14,9 @@ export default function Secret() {
 
         <div className="secret-box secret-cast">
           <section>
+            <div>
+              <img src="" alt="" />
+            </div>
             <ul>
               <li><h1>OMAR KUTAY</h1></li>
               <li><p>Age: 17</p></li>

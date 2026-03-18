@@ -1,17 +1,17 @@
 import "./Contact.css";
 
 const gameTeam = [
-  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team" },
   { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team" },
-  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team" },
-  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team" },
-  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team" },
-  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team" },
   { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team" },
+  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team" },
   { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team" },
-  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team" },
   { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team" },
   { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team" },
+  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team" },
+  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team" },
+  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team" },
+  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team" },
+  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team" }
 ];
 
 const webTeam = [
