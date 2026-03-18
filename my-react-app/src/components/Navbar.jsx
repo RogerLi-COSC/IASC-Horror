@@ -93,8 +93,8 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/signup" className={linkClass}>
-                Sign Up
+              <NavLink to="/download" className={linkClass}>
+                Download
               </NavLink>
             </li>
             <li>
@@ -103,13 +103,13 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/contact" className={linkClass}>
-                Contact
+              <NavLink to="/signup" className={linkClass}>
+                Sign up
               </NavLink>
             </li>
             <li>
-              <NavLink to="/download" className={linkClass}>
-                Download
+              <NavLink to="/contact" className={linkClass}>
+                Contact
               </NavLink>
             </li>
             <li>
