@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import TransitionProvider from "./components/TransitionProvider";
 import BloodDrips from "./components/BloodDrips";
@@ -23,7 +23,7 @@ import "./App.css";
 
 export default function App() {
   return (
-    <BrowserRouter basename="/~rl20wa/IASC">
+    <HashRouter>
       <TransitionProvider>
         <ScrollToTop />
 
@@ -52,6 +52,6 @@ export default function App() {
           </div>
         </SecretUnlockProvider>
       </TransitionProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
