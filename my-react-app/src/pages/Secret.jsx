@@ -1,10 +1,10 @@
 import "./Secret.css";
 import WordSearchMiniGame from "../components/WordSearchMiniGame";
-import Omar from "../assets/OmarKutay.png";
-import Logan from "../assets/LoganSaunders.png";
-import Sasha from "../assets/SashaCowen.png";
-import Zoey from "../assets/ZoeyMalano.png";
-import Noah from "../assets/NoahDhavale.png";
+import Omar from "../assets/Omar.png";
+import Logan from "../assets/Logan.png";
+import Sasha from "../assets/Sasha.png";
+import Zoey from "../assets/Zoey.png";
+import Noah from "../assets/Noah.jpg";
 
 export default function Secret() {
   return (
@@ -67,8 +67,8 @@ export default function Secret() {
           </section>
 
           <section>
-            <div className="card">
-              <img src={Noah} alt="Profile" />
+            <div className="card Noah">
+              <img src={Noah} alt="Profile"/>
               <ul>
                 <li><h1>NOAH DHAVALE</h1></li>
                 <li><p><strong>Age:</strong> 17</p></li>
