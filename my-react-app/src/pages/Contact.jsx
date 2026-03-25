@@ -1,29 +1,44 @@
 import "./Contact.css";
+import Lauren from "../assets/profiles/Lauren.jpg";
+import Megan from "../assets/profiles/Megan.jpg";
+import Danielle from "../assets/profiles/Danielle.jpg";
+import Kylan from "../assets/profiles/Kylan.jpg";
+import Mo from "../assets/profiles/Mo.jpg";
+import Roger from "../assets/profiles/Roger.jpg";
+import Tomas from "../assets/profiles/Tomas.jpg";
+import Dimple from "../assets/profiles/Dimple.jpg";
+
+import Yael from "../assets/profiles/Yael.jpg";
+import Matteo from "../assets/profiles/Matteo.jpg";
+import Amelia from "../assets/profiles/Amelia.jpg";
+import Julia from "../assets/profiles/Julia.jpg";
+import Noah from "../assets/profiles/Noah.jpg";
+import Stanlee from "../assets/profiles/Stanlee.jpg";
 
 const gameTeam = [
-  { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team", img: null },
+  { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team", img: Yael },
   { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team", img: null },
-  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team", img: null },
+  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team", img: Julia },
   { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team", img: null },
   { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team", img: null },
   { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team", img: null },
-  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team", img: null },
+  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team", img: Noah },
   { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team", img: null },
-  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team", img: null },
-  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team", img: null },
-  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team", img: null }
+  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team", img: Amelia },
+  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team", img: Stanlee },
+  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team", img: Matteo }
 ];
 
 const webTeam = [
-  { name: "Lauren Berlettano", role: "Design, Marketing, & Management", title: "Web Team", img: "../assets/Lauren_Berlettano.jpg" },
-  { name: "Dimple Mistry", role: "Design & Coding", title: "Web Team", img: null },
-  { name: "Tomas Galvez", role: "Design & Management", title: "Web Team", img: null },
-  { name: "Danielle Clapiz", role: "Design & Coding", title: "Web Team", img: null },
+  { name: "Lauren Berlettano", role: "Design, Marketing, & Management", title: "Web Team", img: Lauren },
+  { name: "Dimple Mistry", role: "Design & Coding", title: "Web Team", img: Dimple },
+  { name: "Tomas Galvez", role: "Design & Management", title: "Web Team", img: Tomas },
+  { name: "Danielle Clapiz", role: "Design & Coding", title: "Web Team", img: Danielle },
   { name: "Kylie Schipper", role: "Design & Marketing", title: "Web Team", img: null },
-  { name: "Roger Li", role: "Coding", title: "Web Team", img: null },
-  { name: "Megan Smith", role: "Design & Marketing", title: "Web Team", img: null },
-  { name: "Moztabir Islam", role: "Coding", title: "Web Team", img: null },
-  { name: "Kylan Joint", role: "Video Production & Marketing", title: "Web Team", img: null },
+  { name: "Roger Li", role: "Coding", title: "Web Team", img: Roger },
+  { name: "Megan Smith", role: "Design & Marketing", title: "Web Team", img: Megan },
+  { name: "Moztabir Islam", role: "Coding", title: "Web Team", img: Mo },
+  { name: "Kylan Joint", role: "Video Production & Marketing", title: "Web Team", img: Kylan },
 ];
 
 function PhotoSlot({ img, name }) {
@@ -38,7 +53,7 @@ function PhotoSlot({ img, name }) {
           />
         )}
       </div>
-      <div className="contact-photo-caption">PHOTO</div>
+      {/* <div className="contact-photo-caption">PHOTO</div> */}
     </div>
   );
 }
