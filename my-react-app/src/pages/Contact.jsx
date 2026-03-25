@@ -1,62 +1,61 @@
 import "./Contact.css";
 
 const gameTeam = [
-  { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team" },
-  { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team" },
-  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team" },
-  { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team" },
-  { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team" },
-  { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team" },
-  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team" },
-  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team" },
-  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team" },
-  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team" },
-  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team" }
+  { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team", img: null },
+  { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team", img: null },
+  { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team", img: null },
+  { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team", img: null },
+  { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team", img: null },
+  { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team", img: null },
+  { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team", img: null },
+  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team", img: null },
+  { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team", img: null },
+  { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team", img: null },
+  { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team", img: null }
 ];
 
 const webTeam = [
-  { name: "Lauren Berlettano", role: "Design, Marketing, & Management", title: "Web Team" },
-  { name: "Dimple Mistry", role: "Design & Coding", title: "Web Team" },
-  { name: "Tomas Galvez", role: "Design & Management", title: "Web Team" },
-  { name: "Danielle Clapiz", role: "Design & Coding", title: "Web Team" },
-  { name: "Kylie Schipper", role: "Design & Marketing", title: "Web Team" },
-  { name: "Roger Li", role: "Coding", title: "Web Team" },
-  { name: "Megan Smith", role: "Design & Marketing", title: "Web Team" },
-  { name: "Moztabir Islam", role: "Coding", title: "Web Team" },
-  { name: "Kylan Joint", role: "Video Production & Marketing", title: "Web Team" },
+  { name: "Lauren Berlettano", role: "Design, Marketing, & Management", title: "Web Team", img: "../assets/Lauren_Berlettano.jpg" },
+  { name: "Dimple Mistry", role: "Design & Coding", title: "Web Team", img: null },
+  { name: "Tomas Galvez", role: "Design & Management", title: "Web Team", img: null },
+  { name: "Danielle Clapiz", role: "Design & Coding", title: "Web Team", img: null },
+  { name: "Kylie Schipper", role: "Design & Marketing", title: "Web Team", img: null },
+  { name: "Roger Li", role: "Coding", title: "Web Team", img: null },
+  { name: "Megan Smith", role: "Design & Marketing", title: "Web Team", img: null },
+  { name: "Moztabir Islam", role: "Coding", title: "Web Team", img: null },
+  { name: "Kylan Joint", role: "Video Production & Marketing", title: "Web Team", img: null },
 ];
 
-function PhotoSlot({ name }) {
-  const initials = name
-    .split(" ")
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-
+function PhotoSlot({ img, name }) {
   return (
-    <div className="contact-photo-slot" aria-label={`${name} profile placeholder`}>
-      <div className="contact-photo-inner">{initials}</div>
+    <div className="contact-photo-slot">
+      <div className="contact-photo-inner">
+        {img && (
+          <img
+            src={img}
+            alt={name}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        )}
+      </div>
       <div className="contact-photo-caption">PHOTO</div>
     </div>
   );
 }
 
-function MemberCard({ name, role, title }) {
+function MemberCard({ name, role, title, img }) {
   return (
     <article className="member-card">
-      <PhotoSlot name={name} />
-
+      <PhotoSlot img={img} name={name} />
       <div className="member-info">
         <div className="member-row">
           <span className="member-label">Name</span>
           <div className="member-value member-name">{name}</div>
         </div>
-
         <div className="member-row">
           <span className="member-label">Role</span>
           <div className="member-value member-role">{role}</div>
         </div>
-
         <div className="member-row">
           <span className="member-label">Division</span>
           <div className="member-value member-division">{title}</div>
@@ -94,7 +93,7 @@ export default function Contact() {
             <span className="contact-disclaimer-label">Notice:</span>
             <span className="contact-disclaimer-text">
               This page contains the listed contributors behind the game and website
-              presentation. Designed in an archived patient-record style.
+              presentation. Designed in a haunted dossier style.
             </span>
           </div>
 
