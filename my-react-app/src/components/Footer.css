@@ -1,4 +1,4 @@
-.site-footer {
+/* .site-footer {
   background: linear-gradient(
     to bottom,
     rgba(50, 0, 0, 0.95),
@@ -11,6 +11,37 @@
 
   color: #f4e9e9;
   font-family: "Georgia", "Times New Roman", serif;
+} */
+
+.site-footer {
+  position: relative;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(50, 0, 0, 0.95),
+    rgba(35, 0, 0, 0.98)
+  );
+
+  border-top: 2px solid rgba(120, 0, 0, 0.8);
+  padding: 60px 20px 50px;
+  margin-top: 120px;
+
+  color: #f4e9e9;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+/* pixel grid overlay */
+.site-footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+
+  background-size: 6px 6px; /* same as navbar */
 }
 
 .footer-inner {

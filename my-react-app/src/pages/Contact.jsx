@@ -15,10 +15,11 @@ import Amelia from "../assets/profiles/Amelia.jpg";
 import Julia from "../assets/profiles/Julia.jpg";
 import Noah from "../assets/profiles/Noah.jpg";
 import Stanlee from "../assets/profiles/Stanlee.jpg";
+import Carter from "../assets/profiles/Carter.jpg";
 
 const gameTeam = [
   { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team", img: Yael },
-  { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team", img: null },
+  { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team", img: Carter },
   { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team", img: Julia },
   { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team", img: null },
   { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team", img: null },
