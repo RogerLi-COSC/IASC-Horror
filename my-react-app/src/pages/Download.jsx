@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Download.css";
 
-const targetDate = new Date("April 1, 2026 08:30:00").getTime();
+const targetDate = new Date("March 25, 2026 10:29:00").getTime();
 
 export default function Download() {
   const [time, setTime] = useState({
@@ -11,18 +11,15 @@ export default function Download() {
     seconds: "00",
   });
 
+  const [isReleased, setIsReleased] = useState(false); // 👈 NEW
+
   useEffect(() => {
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = targetDate - now;
 
       if (distance < 0) {
-        setTime({
-          days: "00",
-          hours: "00",
-          minutes: "00",
-          seconds: "00",
-        });
+        setIsReleased(true); // 👈 trigger release state
         return;
       }
 
@@ -40,38 +37,53 @@ export default function Download() {
     }
 
     updateCountdown();
-
     const interval = setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(interval); // cleanup
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <main className="download-page">
       <div className="countdown-box">
-        <p>Time remaining until the game release</p>
 
-        <div className="countdown">
-          <div className="time-box">
-            <div className="number">{time.days}</div>
-            <div className="label">Days</div>
-          </div>
+        {!isReleased ? (
+          <>
+            <p>Time remaining until the game release</p>
 
-          <div className="time-box">
-            <div className="number">{time.hours}</div>
-            <div className="label">Hours</div>
-          </div>
+            <div className="countdown">
+              <div className="time-box">
+                <div className="number">{time.days}</div>
+                <div className="label">Days</div>
+              </div>
 
-          <div className="time-box">
-            <div className="number">{time.minutes}</div>
-            <div className="label">Minutes</div>
-          </div>
+              <div className="time-box">
+                <div className="number">{time.hours}</div>
+                <div className="label">Hours</div>
+              </div>
 
-          <div className="time-box">
-            <div className="number">{time.seconds}</div>
-            <div className="label">Seconds</div>
+              <div className="time-box">
+                <div className="number">{time.minutes}</div>
+                <div className="label">Minutes</div>
+              </div>
+
+              <div className="time-box">
+                <div className="number">{time.seconds}</div>
+                <div className="label">Seconds</div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="release-message">
+            <h2>The game is now available</h2>
+            <p>Your nightmare begins now...</p>
+
+            {/* optional download button */}
+            <a href="/game-download.zip" className="download-btn">
+              Download Now
+            </a>
           </div>
-        </div>
+        )}
+
       </div>
     </main>
   );

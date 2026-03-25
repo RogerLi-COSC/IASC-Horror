@@ -1,10 +1,14 @@
 .download-page {
     background: radial-gradient(circle at center, #1a0000 0%, #000000 70%);
     color: #ff3b3b;
-    /* font-family: 'Creepster', cursive, Arial, sans-serif; */
 }
 
-/* Main container */
+h2{
+    color: white;
+    font-size: 32px;
+    text-transform: uppercase;
+}
+
 .countdown-box{
     text-align: center;
     display: flex;
@@ -22,27 +26,24 @@
     /* text-shadow: 0 0 10px #5b0201, 0 0 20px #990000; */
 }
 
-/* Countdown container */
 .countdown {
     display: flex;
     gap: 40px;
     justify-content: center;
     align-items: center;
     padding: 40px 60px;
-    /* border-radius: 8px; */
-    /* background: rgba(20, 0, 0, 0.8);
-    border: 2px solid #660000;
-    box-shadow: 0 0 25px #8b0000; */
 }
 
-/* Each time box */
+.release-message p{
+    text-transform: none;
+}
+
 .time-box {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Numbers */
 .number {
     font-size: 55px;
     font-weight: bold;
@@ -53,7 +54,6 @@
         0 0 25px #660000;
 }
 
-/* Labels */
 .label {
     font-size: 18px;
     color: #e6e1dc;
@@ -73,4 +73,32 @@
 
 .number {
     animation: flicker 3s infinite;
+}
+
+.download-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 18px 50px;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: #1a0000;
+  border: 2px solid #5b0201;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 3px;
+  box-shadow: 
+    0 0 5px #ff0000,
+    0 0 15px #990000,
+    0 0 25px #660000;
+  transition: all 0.3s ease;
+  animation: flicker 3s infinite;
+}
+
+.download-btn:hover {
+  box-shadow: 
+    0 0 30px #990000,
+    0 0 40px #660000;
+  transform: scale(1.05);
 }
