@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Download.css";
 
-const targetDate = new Date("March 25, 2026 10:29:00").getTime();
+const targetDate = new Date("April 1, 2026 9:00:00").getTime();
 
 export default function Download() {
   const [time, setTime] = useState({
@@ -11,7 +11,7 @@ export default function Download() {
     seconds: "00",
   });
 
-  const [isReleased, setIsReleased] = useState(false); // 👈 NEW
+  const [isReleased, setIsReleased] = useState(false);
 
   useEffect(() => {
     function updateCountdown() {
@@ -19,7 +19,7 @@ export default function Download() {
       const distance = targetDate - now;
 
       if (distance < 0) {
-        setIsReleased(true); // 👈 trigger release state
+        setIsReleased(true);
         return;
       }
 
@@ -76,8 +76,6 @@ export default function Download() {
           <div className="release-message">
             <h2>The game is now available</h2>
             <p>Your nightmare begins now...</p>
-
-            {/* optional download button */}
             <a href="/game-download.zip" className="download-btn">
               Download Now
             </a>
