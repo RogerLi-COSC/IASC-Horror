@@ -7,6 +7,7 @@ import Mo from "../assets/profiles/Mo.jpg";
 import Roger from "../assets/profiles/Roger.jpg";
 import Tomas from "../assets/profiles/Tomas.jpg";
 import Dimple from "../assets/profiles/Dimple.jpg";
+import Kylie from "../assets/profiles/Kylie.jpg";
 
 import Yael from "../assets/profiles/Yael.jpg";
 import Matteo from "../assets/profiles/Matteo.jpg";
@@ -34,7 +35,7 @@ const webTeam = [
   { name: "Dimple Mistry", role: "Design & Coding", title: "Web Team", img: Dimple },
   { name: "Tomas Galvez", role: "Design & Management", title: "Web Team", img: Tomas },
   { name: "Danielle Clapiz", role: "Design & Coding", title: "Web Team", img: Danielle },
-  { name: "Kylie Schipper", role: "Design & Marketing", title: "Web Team", img: null },
+  { name: "Kylie Schipper", role: "Design & Marketing", title: "Web Team", img: Kylie },
   { name: "Roger Li", role: "Coding", title: "Web Team", img: Roger },
   { name: "Megan Smith", role: "Design & Marketing", title: "Web Team", img: Megan },
   { name: "Moztabir Islam", role: "Coding", title: "Web Team", img: Mo },
