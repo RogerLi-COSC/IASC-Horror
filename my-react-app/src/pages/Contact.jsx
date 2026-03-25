@@ -53,7 +53,6 @@ function PhotoSlot({ img, name }) {
           />
         )}
       </div>
-      {/* <div className="contact-photo-caption">PHOTO</div> */}
     </div>
   );
 }
