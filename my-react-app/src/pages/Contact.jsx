@@ -16,16 +16,20 @@ import Julia from "../assets/profiles/Julia.jpg";
 import Noah from "../assets/profiles/Noah.jpg";
 import Stanlee from "../assets/profiles/Stanlee.jpg";
 import Carter from "../assets/profiles/Carter.jpg";
+import Cadence from "../assets/profiles/Cadence.jpg";
+import Grayson from "../assets/profiles/Grayson.jpg";
+import Abdullah from "../assets/profiles/Abdullah.jpg";
+import Ekraj from "../assets/profiles/Ekraj.jpg";
 
 const gameTeam = [
   { name: "Ya’el Lederman", role: "Narrative Lead / Audio Designer", title: "Game Team", img: Yael },
   { name: "Carter Sentance", role: "3D Artist / Designer", title: "Game Team", img: Carter },
   { name: "Julia Book", role: "Audio Lead / Narrative Team", title: "Game Team", img: Julia },
-  { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team", img: null },
-  { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team", img: null },
-  { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team", img: null },
+  { name: "Abdullah Sheikh", role: "3D Artist / Programmer", title: "Game Team", img: Abdullah },
+  { name: "Ekraj Singh Narang", role: "3D Artist / Audio Designer", title: "Game Team", img: Ekraj },
+  { name: "Cadence Delia", role: "3D Artist / Programmer", title: "Game Team", img: Cadence },
   { name: "Noah Serpa", role: "Art Lead / Programmer", title: "Game Team", img: Noah },
-  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team", img: null },
+  { name: "Grayson Lambert", role: "3D Artist / Programmer", title: "Game Team", img: Grayson },
   { name: "Amelia Gordon", role: "Character Artist / Concept Artist", title: "Game Team", img: Amelia },
   { name: "Stanlee Castaneda", role: "3D Artist / Programmer", title: "Game Team", img: Stanlee },
   { name: "Matteo Monteleone", role: "Tech Lead / Design Lead", title: "Game Team", img: Matteo }
