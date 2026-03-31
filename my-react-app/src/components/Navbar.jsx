@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo2.png";
 import "./Navbar.css";
 
 import { useSecretUnlock } from "./SecretUnlockContext";
+
+const SECRET_SEEN_COUNT_KEY = "seenSecretPageCount";
 
 function FileIcon() {
   return (
@@ -39,12 +41,26 @@ function FileIcon() {
 export default function Navbar() {
   const { isSecretUnlocked, isSecretTwoUnlocked } = useSecretUnlock();
   const [isSecretMenuOpen, setIsSecretMenuOpen] = useState(false);
+  const [hasNewSecretGlow, setHasNewSecretGlow] = useState(false);
+
   const secretMenuRef = useRef(null);
   const location = useLocation();
 
   const linkClass = ({ isActive }) => `navlink ${isActive ? "active" : ""}`;
   const isSecretAreaActive =
     location.pathname === "/secret" || location.pathname === "/secret-2";
+
+  const unlockedSecretPages = useMemo(
+    () => [
+      ...(isSecretUnlocked ? [{ to: "/secret", label: "Secret Page 01" }] : []),
+      ...(isSecretTwoUnlocked
+        ? [{ to: "/secret-2", label: "Secret Page 02" }]
+        : []),
+    ],
+    [isSecretUnlocked, isSecretTwoUnlocked]
+  );
+
+  const unlockedSecretCount = unlockedSecretPages.length;
 
   useEffect(() => {
     setIsSecretMenuOpen(false);
@@ -69,124 +85,127 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const seenCount = Number(localStorage.getItem(SECRET_SEEN_COUNT_KEY) || "0");
+    setHasNewSecretGlow(unlockedSecretCount > seenCount);
+  }, [unlockedSecretCount]);
+
+  function clearSecretGlow() {
+    localStorage.setItem(SECRET_SEEN_COUNT_KEY, String(unlockedSecretCount));
+    setHasNewSecretGlow(false);
+  }
+
   function toggleSecretMenu() {
-    setIsSecretMenuOpen((prev) => !prev);
+    setIsSecretMenuOpen((prev) => {
+      const next = !prev;
+
+      if (next) {
+        clearSecretGlow();
+      }
+
+      return next;
+    });
   }
 
   return (
-    <header className="navbar">
-      <div className="navbar-inner">
-        <NavLink to="/" className="nav-brand" aria-label="Go to Home">
-          <img className="brand-logo" src={logo} alt="Comatose" />
-        </NavLink>
+    <>
+      <header className="navbar">
+        <div className="navbar-inner">
+          <NavLink to="/" className="nav-brand" aria-label="Go to Home">
+            <img className="brand-logo" src={logo} alt="Comatose" />
+          </NavLink>
 
-        <nav aria-label="Primary">
-          <ul className="navbar-links">
-            <li>
-              <NavLink to="/" className={linkClass}>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" className={linkClass}>
-                About
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/download" className={linkClass}>
-                Download
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/tutorial" className={linkClass}>
-                Tutorial
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/signup" className={linkClass}>
-                Sign up
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/contact" className={linkClass}>
-                Contact
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/faq" className={linkClass}>
-                FAQ
-              </NavLink>
-            </li>
-
-            {isSecretUnlocked && (
-              <li
-                className={`secret-file-li ${isSecretMenuOpen ? "is-open" : ""}`}
-                ref={secretMenuRef}
-              >
-                {!isSecretTwoUnlocked ? (
-                  <NavLink
-                    to="/secret"
-                    className={({ isActive }) =>
-                      `navlink secret-file-link ${isActive ? "active" : ""}`
-                    }
-                    title="Open Secret File"
-                    aria-label="Open Secret File"
-                  >
-                    <FileIcon />
-                  </NavLink>
-                ) : (
-                  <>
-                    <button
-                      type="button"
-                      className={`navlink secret-file-link secret-file-button ${
-                        isSecretAreaActive ? "active" : ""
-                      }`}
-                      title="Open Secret Files"
-                      aria-label="Open Secret Files"
-                      aria-haspopup="menu"
-                      aria-expanded={isSecretMenuOpen}
-                      onClick={toggleSecretMenu}
-                    >
-                      <FileIcon />
-                    </button>
-
-                    <div
-                      className={`secret-dropdown ${
-                        isSecretMenuOpen ? "is-open" : ""
-                      }`}
-                      role="menu"
-                    >
-                      <NavLink
-                        to="/secret"
-                        role="menuitem"
-                        className={({ isActive }) =>
-                          `secret-dropdown-link ${isActive ? "active" : ""}`
-                        }
-                        onClick={() => setIsSecretMenuOpen(false)}
-                      >
-                        Secret Page 01
-                      </NavLink>
-
-                      <NavLink
-                        to="/secret-2"
-                        role="menuitem"
-                        className={({ isActive }) =>
-                          `secret-dropdown-link ${isActive ? "active" : ""}`
-                        }
-                        onClick={() => setIsSecretMenuOpen(false)}
-                      >
-                        Secret Page 02
-                      </NavLink>
-                    </div>
-                  </>
-                )}
+          <nav aria-label="Primary">
+            <ul className="navbar-links">
+              <li>
+                <NavLink to="/" className={linkClass}>
+                  Home
+                </NavLink>
               </li>
-            )}
-          </ul>
-        </nav>
+              <li>
+                <NavLink to="/about" className={linkClass}>
+                  About
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/download" className={linkClass}>
+                  Download
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/tutorial" className={linkClass}>
+                  Tutorial
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/signup" className={linkClass}>
+                  Sign up
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact" className={linkClass}>
+                  Contact
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/faq" className={linkClass}>
+                  FAQ
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
 
-        <div className="nav-right-spacer" />
-      </div>
-    </header>
+          <div className="nav-right-spacer" />
+        </div>
+      </header>
+
+      {isSecretUnlocked && (
+        <div
+          className={`secret-fab-wrap ${isSecretMenuOpen ? "is-open" : ""}`}
+          ref={secretMenuRef}
+        >
+          <div
+            className={`secret-fab-dropdown ${
+              isSecretMenuOpen ? "is-open" : ""
+            }`}
+            role="menu"
+            aria-label="Unlocked secret pages"
+          >
+            <div className="secret-fab-dropdown-label">Unlocked Files</div>
+
+            {unlockedSecretPages.map((page) => (
+              <NavLink
+                key={page.to}
+                to={page.to}
+                role="menuitem"
+                className={({ isActive }) =>
+                  `secret-fab-link ${isActive ? "active" : ""}`
+                }
+                onClick={() => {
+                  setIsSecretMenuOpen(false);
+                  clearSecretGlow();
+                }}
+              >
+                {page.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className={`secret-fab-button ${
+              isSecretMenuOpen || isSecretAreaActive ? "active" : ""
+            } ${hasNewSecretGlow ? "has-new-secret" : ""}`}
+            title="Open Secret Files"
+            aria-label="Open Secret Files"
+            aria-haspopup="menu"
+            aria-expanded={isSecretMenuOpen}
+            onClick={toggleSecretMenu}
+          >
+            <FileIcon />
+          </button>
+        </div>
+      )}
+    </>
   );
 }

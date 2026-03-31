@@ -8,16 +8,87 @@ import homeSting from "../assets/heart.mp3";
 import "./BackgroundAudio.css";
 
 const STORAGE_KEY = "siteMuted";
+const SITE_AUDIO_EVENT = "site-audio-change";
 
-// 🔧 Tune these
-const GIF_LOOP_MS = 10_000; // your GIF loop length
-const HIT_M_OFFSET_MS = 780; // adjust until it hits exactly when green reaches the "M"
+// tune these
+const GIF_LOOP_MS = 10_000;
+const HIT_M_OFFSET_MS = 780;
 
 // volumes
 const HOME_BG_INITIAL_VOL = 0.35;
 const HOME_BG_AFTER_VOL = HOME_BG_INITIAL_VOL / 2;
 const OTHER_BG_VOL = 0.35;
 const STING_VOL = 0.85;
+
+function getStoredMute() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  return saved === "1";
+}
+
+function syncMediaElement(media, muted) {
+  if (!media) return;
+
+  media.muted = muted;
+
+  if (muted) {
+    try {
+      media.pause();
+    } catch {
+      // ignore pause errors
+    }
+  }
+}
+
+function installGlobalAudioBridge() {
+  if (typeof window === "undefined") return;
+  if (window.__siteAudioBridgeInstalled) return;
+
+  const OriginalAudio = window.Audio;
+  const registry = new Set();
+
+  const registerAudio = (audio) => {
+    if (!audio) return audio;
+
+    registry.add(audio);
+    audio.muted = getStoredMute();
+
+    return audio;
+  };
+
+  function PatchedAudio(...args) {
+    const audio = new OriginalAudio(...args);
+    return registerAudio(audio);
+  }
+
+  PatchedAudio.prototype = OriginalAudio.prototype;
+  Object.setPrototypeOf(PatchedAudio, OriginalAudio);
+
+  window.Audio = PatchedAudio;
+  window.__siteAudioRegistry = registry;
+  window.__registerSiteAudio = registerAudio;
+  window.__siteAudioBridgeInstalled = true;
+}
+
+function syncAllKnownAudio(muted) {
+  if (typeof window === "undefined") return;
+
+  const domAudio = Array.from(document.querySelectorAll("audio"));
+  const registeredAudio = window.__siteAudioRegistry
+    ? Array.from(window.__siteAudioRegistry)
+    : [];
+
+  const allAudio = [...new Set([...domAudio, ...registeredAudio])];
+
+  allAudio.forEach((audio) => {
+    syncMediaElement(audio, muted);
+  });
+
+  window.dispatchEvent(
+    new CustomEvent(SITE_AUDIO_EVENT, {
+      detail: { muted },
+    })
+  );
+}
 
 export default function BackgroundAudio({ gifStartMs = 0 }) {
   const location = useLocation();
@@ -28,23 +99,33 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
 
   const stingIntervalRef = useRef(null);
   const firstStingTimeoutRef = useRef(null);
-  const hasDuckedRef = useRef(false); // tracks if we've reduced home bg volume after first sting
-  const unlockedRef = useRef(false); // tracks if we've passed autoplay restriction via interaction
+  const hasDuckedRef = useRef(false);
+  const unlockedRef = useRef(false);
 
-  const [muted, setMuted] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved === "1";
-  });
+  const [muted, setMuted] = useState(() => getStoredMute());
 
-  // Keep audio muted flags synced
   useEffect(() => {
+    installGlobalAudioBridge();
+
+    if (window.__registerSiteAudio) {
+      window.__registerSiteAudio(bgAudioRef.current);
+      window.__registerSiteAudio(stingAudioRef.current);
+    }
+
+    syncAllKnownAudio(muted);
+  }, []);
+
+  useEffect(() => {
+    syncAllKnownAudio(muted);
+
     const bg = bgAudioRef.current;
     const sting = stingAudioRef.current;
+
     if (bg) bg.muted = muted;
     if (sting) sting.muted = muted;
   }, [muted]);
 
-  // Try to start audio after first user interaction (autoplay policy)
+  // Try to start audio after first user interaction
   useEffect(() => {
     const bg = bgAudioRef.current;
     if (!bg) return;
@@ -62,10 +143,8 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
       window.removeEventListener("touchstart", onFirstInteraction);
     };
 
-    // attempt once (may be blocked)
     tryStart();
 
-    // unlock on first interaction
     window.addEventListener("pointerdown", onFirstInteraction, { passive: true });
     window.addEventListener("keydown", onFirstInteraction);
     window.addEventListener("touchstart", onFirstInteraction, { passive: true });
@@ -77,7 +156,7 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
     };
   }, [muted, isHome]);
 
-  // Background track routing (home vs others)
+  // Background track routing
   useEffect(() => {
     const bg = bgAudioRef.current;
     if (!bg) return;
@@ -85,23 +164,18 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
     const desiredSrc = isHome ? homeSound : ambientSound;
     const desiredAbs = new URL(desiredSrc, window.location.href).href;
 
-    // swap track only if changed
     if (bg.src !== desiredAbs) {
       bg.src = desiredSrc;
       bg.currentTime = 0;
-
-      // reset ducking when switching routes
       hasDuckedRef.current = false;
     }
 
-    // set volume per route
     if (isHome) {
       bg.volume = hasDuckedRef.current ? HOME_BG_AFTER_VOL : HOME_BG_INITIAL_VOL;
     } else {
       bg.volume = OTHER_BG_VOL;
     }
 
-    // enforce mute
     bg.muted = muted;
 
     if (muted) {
@@ -109,7 +183,6 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
       return;
     }
 
-    // play (may be blocked until interaction)
     const p = bg.play();
     if (p !== undefined) p.catch(() => {});
   }, [isHome, muted]);
@@ -119,17 +192,16 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
     const sting = stingAudioRef.current;
     const bg = bgAudioRef.current;
 
-    // clear previous timers
     if (firstStingTimeoutRef.current) {
       clearTimeout(firstStingTimeoutRef.current);
       firstStingTimeoutRef.current = null;
     }
+
     if (stingIntervalRef.current) {
       clearInterval(stingIntervalRef.current);
       stingIntervalRef.current = null;
     }
 
-    // only run on home, not muted
     if (!isHome || muted || !sting) {
       if (sting) {
         sting.pause();
@@ -138,7 +210,6 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
       return;
     }
 
-    // wait for gifStartMs so we can sync
     if (!gifStartMs) return;
 
     sting.muted = muted;
@@ -151,14 +222,12 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
       sting.currentTime = 0;
       sting.play().catch(() => {});
 
-      // after FIRST sting, cut home bg volume in half (keeps playing)
       if (bg && isHome) {
         hasDuckedRef.current = true;
         bg.volume = HOME_BG_AFTER_VOL;
       }
     };
 
-    // schedule first sting at the exact offset in the GIF loop
     const targetTime = gifStartMs + HIT_M_OFFSET_MS;
     const delay = Math.max(0, targetTime - Date.now());
 
@@ -172,28 +241,33 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
         clearTimeout(firstStingTimeoutRef.current);
         firstStingTimeoutRef.current = null;
       }
+
       if (stingIntervalRef.current) {
         clearInterval(stingIntervalRef.current);
         stingIntervalRef.current = null;
       }
+
       sting.pause();
       sting.currentTime = 0;
     };
   }, [isHome, muted, gifStartMs]);
 
   function toggleMute() {
-    setMuted((m) => {
-      const next = !m;
+    setMuted((current) => {
+      const next = !current;
       localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
 
-      // If unmuting, try to start immediately (counts as user interaction)
+      syncAllKnownAudio(next);
+
       if (!next) {
         const bg = bgAudioRef.current;
         bg?.play().catch(() => {});
       } else {
         const bg = bgAudioRef.current;
         const sting = stingAudioRef.current;
+
         bg?.pause();
+
         if (sting) {
           sting.pause();
           sting.currentTime = 0;
@@ -213,13 +287,13 @@ export default function BackgroundAudio({ gifStartMs = 0 }) {
         className="bg-audio-mute"
         type="button"
         onClick={toggleMute}
-        aria-label={muted ? "Unmute background audio" : "Mute background audio"}
-        title={muted ? "Unmute" : "Mute"}
+        aria-label={muted ? "Unmute all game audio" : "Mute all game audio"}
+        title={muted ? "Unmute all audio" : "Mute all audio"}
       >
         <span className="bg-audio-icon" aria-hidden="true">
           {muted ? "🔇" : "🔊"}
         </span>
-        <span className="bg-audio-text">{muted ? "MUTED" : "SOUND"}</span>
+        <span className="bg-audio-text">{muted ? "MUTED" : "AUDIO"}</span>
       </button>
     </>
   );
