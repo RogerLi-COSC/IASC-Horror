@@ -1,7 +1,8 @@
 .about {
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - var(--nav-h));
   padding: 2.5rem 1.5rem 4rem;
   color: #e6e1dc;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
 .about-wrap {
@@ -12,29 +13,30 @@
 .about-title {
   margin: 0 0 1rem;
   text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: #fff3ea;
 }
 
 .about-text {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(120, 0, 0, 0.45);
-  padding: 1.25rem 1.25rem;
+  padding: 1.25rem;
   border-radius: 8px;
   line-height: 1.8;
+  color: rgba(230, 225, 220, 0.88);
 }
 
-/* ---------------------------
-   Side-by-side newspaper + rooms
-   --------------------------- */
+/* Side-by-side newspaper + rooms */
 .about-media-grid {
   display: flex;
   gap: 1.25rem;
-  align-items: stretch; /* makes columns equal height */
+  align-items: stretch;
   margin-top: 1.5rem;
 }
 
-/* Newspaper column */
 .newspaper-container {
   flex: 2;
   display: flex;
@@ -46,9 +48,9 @@
   height: 100%;
   object-fit: fill;
   border-radius: 8px;
+  border: 1px solid rgba(120, 0, 0, 0.35);
 }
 
-/* Rooms column */
 .rooms-container {
   flex: 1;
   display: flex;
@@ -57,10 +59,11 @@
 }
 
 .media-card {
-  flex: 1; /* each room image takes equal height */
+  flex: 1;
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(120, 0, 0, 0.45);
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .media-photo {
@@ -73,28 +76,27 @@
 
 .media-label {
   padding: 0.75rem 0.9rem;
+  font-family: Georgia, "Times New Roman", serif;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.85rem;
+  color: #fff2e8;
   opacity: 0.95;
 }
 
-/* ---------------------------
-   Responsive adjustments
-   --------------------------- */
 @media (max-width: 900px) {
   .about-media-grid {
-    flex-direction: column; /* stack newspaper + rooms */
+    flex-direction: column;
   }
 
   .rooms-container {
-    flex-direction: row; /* rooms in a row on small screens */
+    flex-direction: row;
     gap: 0.75rem;
   }
 
   .rooms-container .media-card {
-    flex: 1; /* equal width */
-    height: 200px; /* fixed height for small screens */
+    flex: 1;
+    height: 200px;
   }
 
   .news-body {

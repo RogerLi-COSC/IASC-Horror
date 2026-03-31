@@ -1,8 +1,9 @@
 .tutorial {
-  min-height: calc(100vh - 90px);
+  min-height: calc(100vh - var(--nav-h));
   padding: 2.5rem 1.5rem 4rem;
   background: transparent;
-  color: #f4efea;
+  color: #e6e1dc;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
 .tutorial-wrap {
@@ -23,11 +24,7 @@
 .tutorial-panel,
 .clip-row {
   background:
-    linear-gradient(
-      180deg,
-      rgba(16, 6, 6, 0.78) 0%,
-      rgba(35, 9, 9, 0.72) 100%
-    );
+    linear-gradient(180deg, rgba(16, 6, 6, 0.78) 0%, rgba(35, 9, 9, 0.72) 100%);
   border: 1px solid rgba(145, 20, 20, 0.42);
   box-shadow:
     0 22px 60px rgba(0, 0, 0, 0.42),
@@ -44,11 +41,7 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.04) 0%,
-      transparent 22%
-    );
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 22%);
 }
 
 .panel-header {
@@ -60,14 +53,14 @@
   font-size: 0.78rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #d5b7b7;
-  opacity: 0.9;
+  color: rgba(230, 225, 220, 0.78);
 }
 
 .tutorial-title,
 .tutorial-subtitle,
 .control-block-title,
-.clip-title {
+.clip-title,
+.quick-control-label {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
   text-transform: uppercase;
@@ -75,19 +68,19 @@
 }
 
 .tutorial-title {
-  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
-  color: #fff4f4;
+  font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+  color: #fff3ea;
 }
 
 .tutorial-subtitle {
-  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
   color: #fff0f0;
 }
 
 .panel-copy,
 .clip-caption,
 .quick-control-desc {
-  color: rgba(245, 236, 236, 0.84);
+  color: rgba(230, 225, 220, 0.86);
   line-height: 1.6;
 }
 
@@ -97,8 +90,7 @@
 }
 
 .video-frame {
-  background:
-    linear-gradient(180deg, #d8d1ca 0%, #bab1aa 100%);
+  background: linear-gradient(180deg, #d8d1ca 0%, #bab1aa 100%);
   border: 3px solid #2a0606;
   box-shadow:
     inset 0 0 0 2px rgba(0, 0, 0, 0.22),
@@ -106,10 +98,7 @@
   padding: 0.9rem;
 }
 
-.main-frame {
-  aspect-ratio: 16 / 9;
-}
-
+.main-frame,
 .small-frame {
   aspect-ratio: 16 / 9;
 }
@@ -141,7 +130,7 @@
 .control-block-title {
   margin-bottom: 0.85rem;
   font-size: 1rem;
-  color: #f8dede;
+  color: #fff1e8;
 }
 
 .movement-card {
@@ -163,6 +152,7 @@
   display: grid;
   place-items: center;
   font-weight: 700;
+  font-family: Georgia, "Times New Roman", serif;
   border: 2px solid #2d0808;
   box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.28);
   color: #fff7f7;
@@ -190,7 +180,7 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  color: #f5e9e9;
+  color: rgba(230, 225, 220, 0.9);
   font-size: 0.98rem;
 }
 
@@ -239,9 +229,6 @@
 }
 
 .quick-control-label {
-  font-family: Georgia, "Times New Roman", serif;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
   font-size: 1rem;
   color: #fff2f2;
   margin-bottom: 0.18rem;
