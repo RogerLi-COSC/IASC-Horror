@@ -29,6 +29,14 @@
   font-size: 1rem;
 }
 
+.ws-keyboard-hint {
+  margin: 0.85rem 0 0;
+  color: rgba(230, 225, 220, 0.74);
+  line-height: 1.55;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
 .ws-toolbar {
   display: flex;
   justify-content: space-between;
@@ -64,13 +72,23 @@
   letter-spacing: 0.16em;
   cursor: pointer;
   border-radius: 10px;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
-.ws-reset:hover {
+.ws-reset:hover,
+.ws-reset:focus-visible {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.38);
   box-shadow: 0 0 16px rgba(120, 0, 0, 0.25);
+}
+
+.ws-reset:focus-visible {
+  outline: 2px solid rgba(255, 235, 210, 0.9);
+  outline-offset: 3px;
 }
 
 .ws-solve {
@@ -120,12 +138,27 @@
     transform 120ms ease,
     background 120ms ease,
     color 120ms ease,
-    border-color 120ms ease;
+    border-color 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .ws-cell:hover {
-  transform: scale(1.04);
+  transform: scale(1.08);
   border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 14px rgba(120, 0, 0, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ws-cell:focus-visible,
+.ws-cell.is-focus-target {
+  outline: 2px solid rgba(255, 235, 210, 0.92);
+  outline-offset: 2px;
+  transform: scale(1.08);
+  border-color: rgba(255, 235, 210, 0.42);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow:
+    0 0 0 1px rgba(255, 235, 210, 0.16),
+    0 0 18px rgba(170, 0, 0, 0.24);
 }
 
 .ws-cell.is-selected {
@@ -144,6 +177,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 .ws-sidebar {

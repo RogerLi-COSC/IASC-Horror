@@ -24,10 +24,10 @@ const GRID_SIZE = 14;
 const MAX_GENERATION_ATTEMPTS = 150;
 
 const DIRECTIONS = [
-  [0, 1],   // horizontal
-  [1, 0],   // vertical
-  [1, 1],   // diagonal down-right
-  [1, -1],  // diagonal down-left
+  [0, 1],
+  [1, 0],
+  [1, 1],
+  [1, -1],
 ];
 
 function shuffle(arr) {
@@ -47,6 +47,10 @@ function cellKey(row, col) {
   return `${row}-${col}`;
 }
 
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
 function buildPlacementCells(word, row, col, dr, dc) {
   return Array.from({ length: word.length }, (_, i) => ({
     row: row + dr * i,
@@ -60,8 +64,6 @@ function canPlace(board, word, row, col, dr, dc) {
     const c = col + dc * i;
 
     if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) return false;
-
-    // No overlap at all.
     if (board[r][c] !== "") return false;
   }
 
@@ -147,8 +149,6 @@ function choosePlacement(board, word, anchor) {
   if (!candidates.length) return null;
 
   candidates.sort((a, b) => a.score - b.score);
-
-  // Keep boards varied, but still choose from the best placements.
   const topSlice = candidates.slice(0, Math.min(6, candidates.length));
   return topSlice[Math.floor(Math.random() * topSlice.length)];
 }
@@ -223,13 +223,15 @@ function buildPath(start, end) {
 export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
   const navigate = useNavigate();
   const completeAudioRef = useRef(null);
+  const cellRefs = useRef([]);
 
   const [seed, setSeed] = useState(0);
   const [startCell, setStartCell] = useState(null);
   const [selectedPath, setSelectedPath] = useState([]);
   const [foundWords, setFoundWords] = useState([]);
   const [foundCells, setFoundCells] = useState(new Set());
-  const [status, setStatus] = useState("Click the first letter, then the last.");
+  const [status, setStatus] = useState("Choose the first letter, then the last.");
+  const [focusedCell, setFocusedCell] = useState({ row: 0, col: 0 });
 
   const { board, solutionMap } = useMemo(() => makeBoard(), [seed]);
 
@@ -254,16 +256,38 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
     }, 900);
   }
 
-  function resetSelection(nextStatus = "Click the first letter, then the last.") {
+  function resetSelection(nextStatus = "Choose the first letter, then the last.") {
     setStartCell(null);
     setSelectedPath([]);
     setStatus(nextStatus);
+  }
+
+  function moveFocusTo(row, col) {
+    const nextRow = clamp(row, 0, GRID_SIZE - 1);
+    const nextCol = clamp(col, 0, GRID_SIZE - 1);
+
+    setFocusedCell({ row: nextRow, col: nextCol });
+
+    const nextButton = cellRefs.current[nextRow]?.[nextCol];
+    if (nextButton) {
+      nextButton.focus();
+    }
+
+    if (startCell) {
+      const path = buildPath(startCell, { row: nextRow, col: nextCol });
+      setSelectedPath(path || [startCell]);
+    }
   }
 
   function handleHover(row, col) {
     if (!startCell) return;
     const path = buildPath(startCell, { row, col });
     setSelectedPath(path || [startCell]);
+  }
+
+  function handleCellFocus(row, col) {
+    setFocusedCell({ row, col });
+    handleHover(row, col);
   }
 
   function handleSolve() {
@@ -292,7 +316,7 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
     if (!startCell) {
       setStartCell(clicked);
       setSelectedPath([clicked]);
-      setStatus("Choose the last letter.");
+      setStatus("Now choose the last letter.");
       return;
     }
 
@@ -301,7 +325,7 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
     if (!path) {
       setStartCell(clicked);
       setSelectedPath([clicked]);
-      setStatus("Straight lines only.");
+      setStatus("Straight lines only. Start again from this letter.");
       return;
     }
 
@@ -342,16 +366,56 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
     setStatus(`${matchedWord} found.`);
   }
 
+  function handleCellKeyDown(event, row, col) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleClick(row, col);
+      return;
+    }
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      resetSelection("Selection cleared.");
+      return;
+    }
+
+    switch (event.key) {
+      case "ArrowRight":
+        event.preventDefault();
+        moveFocusTo(row, col + 1);
+        break;
+      case "ArrowLeft":
+        event.preventDefault();
+        moveFocusTo(row, col - 1);
+        break;
+      case "ArrowDown":
+        event.preventDefault();
+        moveFocusTo(row + 1, col);
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        moveFocusTo(row - 1, col);
+        break;
+      default:
+        break;
+    }
+  }
+
   const selectedKeys = new Set(
     selectedPath.map((cell) => cellKey(cell.row, cell.col))
   );
 
   return (
-    <section className="ws-wrap">
+    <section className="ws-wrap" aria-labelledby="ws-title">
       <header className="ws-header">
-        <h2 className="ws-title">Find the words before they find you.</h2>
+        <h2 className="ws-title" id="ws-title">
+          Find the words before they find you.
+        </h2>
         <p className="ws-sub">
           Words may be horizontal, vertical, diagonal, and sometimes backwards.
+        </p>
+        <p className="ws-keyboard-hint" id="ws-instructions">
+          Keyboard: use arrow keys to move, Enter or Space to choose letters, and Escape to clear your current selection.
         </p>
       </header>
 
@@ -368,6 +432,7 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
               setSeed((s) => s + 1);
               setFoundWords([]);
               setFoundCells(new Set());
+              setFocusedCell({ row: 0, col: 0 });
               resetSelection("Board reshuffled.");
             }}
           >
@@ -388,6 +453,8 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
         <div className="ws-grid-wrap">
           <div
             className="ws-grid"
+            role="grid"
+            aria-describedby="ws-instructions ws-status"
             style={{ gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))` }}
           >
             {board.map((row, rowIndex) =>
@@ -395,15 +462,27 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
                 const key = cellKey(rowIndex, colIndex);
                 const isSelected = selectedKeys.has(key);
                 const isFound = foundCells.has(key);
+                const isFocused =
+                  focusedCell.row === rowIndex && focusedCell.col === colIndex;
 
                 return (
                   <button
                     key={key}
+                    ref={(el) => {
+                      if (!cellRefs.current[rowIndex]) {
+                        cellRefs.current[rowIndex] = [];
+                      }
+                      cellRefs.current[rowIndex][colIndex] = el;
+                    }}
                     type="button"
-                    className={`ws-cell ${isSelected ? "is-selected" : ""} ${isFound ? "is-found" : ""}`}
+                    className={`ws-cell ${isSelected ? "is-selected" : ""} ${isFound ? "is-found" : ""} ${isFocused ? "is-focus-target" : ""}`}
                     onMouseEnter={() => handleHover(rowIndex, colIndex)}
+                    onFocus={() => handleCellFocus(rowIndex, colIndex)}
                     onClick={() => handleClick(rowIndex, colIndex)}
-                    aria-label={`Letter ${letter}`}
+                    onKeyDown={(event) => handleCellKeyDown(event, rowIndex, colIndex)}
+                    tabIndex={isFocused ? 0 : -1}
+                    aria-label={`Letter ${letter}, row ${rowIndex + 1}, column ${colIndex + 1}${isSelected ? ", selected" : ""}${isFound ? ", found" : ""}`}
+                    aria-pressed={isSelected}
                   >
                     {letter}
                   </button>
@@ -412,7 +491,9 @@ export default function WordSearchMiniGame({ unlockPath = "/secret-2" }) {
             )}
           </div>
 
-          <p className="ws-status">{status}</p>
+          <p className="ws-status" id="ws-status" aria-live="polite">
+            {status}
+          </p>
         </div>
 
         <aside className="ws-sidebar">

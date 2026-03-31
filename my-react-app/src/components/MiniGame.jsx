@@ -7,6 +7,31 @@ import completeSfx from "../assets/complete.mp3";
 import rotateSfx from "../assets/squish.mp3";
 import "./MiniGame.css";
 
+const TILE_COUNT = 4;
+const GRID_COLUMNS = 2;
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getNextTileIndex(currentIndex, key) {
+  const row = Math.floor(currentIndex / GRID_COLUMNS);
+  const col = currentIndex % GRID_COLUMNS;
+
+  switch (key) {
+    case "ArrowRight":
+      return row * GRID_COLUMNS + clamp(col + 1, 0, GRID_COLUMNS - 1);
+    case "ArrowLeft":
+      return row * GRID_COLUMNS + clamp(col - 1, 0, GRID_COLUMNS - 1);
+    case "ArrowDown":
+      return clamp(row + 1, 0, 1) * GRID_COLUMNS + col;
+    case "ArrowUp":
+      return clamp(row - 1, 0, 1) * GRID_COLUMNS + col;
+    default:
+      return currentIndex;
+  }
+}
+
 export default function MiniGame({
   images = [],
   requiredOrder = [1, 2, 3, 4],
@@ -15,7 +40,6 @@ export default function MiniGame({
   const navigate = useNavigate();
   const { unlockSecret } = useSecretUnlock();
 
-  // each tile is 0/90/180/270
   const [rotations, setRotations] = useState([0, 0, 0, 0]);
   const [progressIndex, setProgressIndex] = useState(0);
   const [wrong, setWrong] = useState(false);
@@ -23,10 +47,10 @@ export default function MiniGame({
 
   const required = useMemo(() => requiredOrder.map((n) => n - 1), [requiredOrder]);
 
-  // ===== SFX (fast replay)
   const wrongAudioRef = useRef(null);
   const completeAudioRef = useRef(null);
   const rotateAudioRef = useRef(null);
+  const tileRefs = useRef([]);
 
   useEffect(() => {
     wrongAudioRef.current = new Audio(wrongSfx);
@@ -62,7 +86,6 @@ export default function MiniGame({
     playAudio(rotateAudioRef);
   }
 
-  // ✅ forced reset (no button)
   function forceReset() {
     setRotations([0, 0, 0, 0]);
     setProgressIndex(0);
@@ -72,10 +95,8 @@ export default function MiniGame({
   function handleTileClick(tileIndex) {
     if (unlocked) return;
 
-    // check order click requirement FIRST
     const expectedTile = required[progressIndex];
 
-    // ❌ Wrong order → SFX + forced reset + flash
     if (tileIndex !== expectedTile) {
       playWrong();
       setWrong(true);
@@ -84,7 +105,6 @@ export default function MiniGame({
       return;
     }
 
-    // ✅ Correct click → rotate clicked tile 90deg
     playRotate();
     setRotations((prev) => {
       const next = [...prev];
@@ -94,15 +114,13 @@ export default function MiniGame({
 
     const nextIndex = progressIndex + 1;
 
-    // ✅ Puzzle solved
     if (nextIndex >= required.length) {
       setUnlocked(true);
       playComplete();
 
-      unlockSecret(); // navbar secret icon appears
+      unlockSecret();
 
       window.setTimeout(() => {
-        // ✅ force top BEFORE routing so secret page never appears mid-scroll
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         navigate(unlockPath);
       }, 650);
@@ -113,42 +131,89 @@ export default function MiniGame({
     setProgressIndex(nextIndex);
   }
 
+  function handleTileKeyDown(event, tileIndex) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleTileClick(tileIndex);
+      return;
+    }
+
+    if (
+      event.key === "ArrowRight" ||
+      event.key === "ArrowLeft" ||
+      event.key === "ArrowUp" ||
+      event.key === "ArrowDown"
+    ) {
+      event.preventDefault();
+      const nextIndex = getNextTileIndex(tileIndex, event.key);
+      tileRefs.current[nextIndex]?.focus();
+    }
+  }
+
+  const statusMessage = unlocked
+    ? "Unlocked. Opening the secret page."
+    : wrong
+    ? "Wrong tile order. Puzzle reset."
+    : `Progress ${progressIndex} of ${required.length}. Select the next image in the correct order.`;
+
   return (
-    <div className={`mg-wrap ${wrong ? "mg-wrong" : ""} ${unlocked ? "mg-unlocked" : ""}`}>
+    <section
+      className={`mg-wrap ${wrong ? "mg-wrong" : ""} ${unlocked ? "mg-unlocked" : ""}`}
+      aria-labelledby="mg-title"
+    >
       <header className="mg-header">
-        <h3 className="mg-title"></h3>
+        <h3 className="mg-title" id="mg-title">
+          Select the images in the correct order
+        </h3>
+        <p className="mg-sub">
+          Use your mouse or keyboard to interact with the puzzle.
+        </p>
+        <p className="mg-hint" id="mg-instructions">
+          Keyboard: use arrow keys to move between images, then press Enter or Space to select.
+        </p>
       </header>
 
-      <div className="mg-board">
+      <div className="mg-board" role="group" aria-describedby="mg-instructions mg-status">
         {[0, 1, 2, 3].map((i) => (
           <button
             key={i}
+            ref={(el) => {
+              tileRefs.current[i] = el;
+            }}
             className="mg-tile"
             type="button"
             onClick={() => handleTileClick(i)}
-            aria-label={`Puzzle tile ${i + 1}`}
+            onKeyDown={(event) => handleTileKeyDown(event, i)}
+            aria-label={`Puzzle tile ${i + 1}. Rotated ${rotations[i]} degrees.`}
+            aria-describedby="mg-instructions mg-status"
           >
             <div className="mg-tile-overlay">
               <span className="mg-tile-num">{i + 1}</span>
             </div>
 
-            <div className="mg-img" style={{ transform: `rotate(${rotations[i]}deg)` }}>
-              {images[i] ? (
-                <img src={images[i]} alt={`Puzzle ${i + 1}`} draggable="false" />
-              ) : (
-                <div className="mg-placeholder">PUZZLE {i + 1}</div>
-              )}
+            <div className="mg-img-rotator" style={{ transform: `rotate(${rotations[i]}deg)` }}>
+              <div className="mg-img-pop">
+                {images[i] ? (
+                  <img src={images[i]} alt={`Puzzle ${i + 1}`} draggable="false" />
+                ) : (
+                  <div className="mg-placeholder">Puzzle {i + 1}</div>
+                )}
+              </div>
             </div>
           </button>
         ))}
       </div>
 
       <footer className="mg-footer">
-        <div>
+        <div className="mg-footer-copy">
           Progress: <span className="mg-order">{progressIndex}/{required.length}</span>
-          {unlocked ? <span className="mg-order"> — UNLOCKED</span> : null}
+          {unlocked ? <span className="mg-order"> — Unlocked</span> : null}
         </div>
+
+        <p className="mg-status" id="mg-status" aria-live="polite">
+          {statusMessage}
+        </p>
       </footer>
-    </div>
+    </section>
   );
 }
