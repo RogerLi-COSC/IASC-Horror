@@ -39,6 +39,12 @@ const quickControls = [
     desc: "Inspect clues, then press again to exit.",
     type: "special",
   },
+  {
+    key: "1-6",
+    label: "Inventory",
+    desc: "Select items in your inventory using number keys 1 through 6.",
+    type: "inventory",
+  },
 ];
 
 export default function Tutorial() {
@@ -120,7 +126,11 @@ export default function Tutorial() {
                     <div className="quick-control-card" key={control.key}>
                       <div
                         className={`quick-control-key ${
-                          control.type === "mouse" ? "mouse-key" : "special-key"
+                          control.type === "mouse"
+                            ? "mouse-key"
+                            : control.type === "inventory"
+                            ? "inventory-key"
+                            : "special-key"
                         }`}
                       >
                         {control.key}

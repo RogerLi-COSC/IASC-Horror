@@ -228,6 +228,12 @@
   background: linear-gradient(180deg, #784747 0%, #522c2c 100%);
 }
 
+.quick-control-key.inventory-key {
+  background: linear-gradient(180deg, #784747 0%, #522c2c 100%);
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+}
+
 .quick-control-label {
   font-size: 1rem;
   color: #fff2f2;

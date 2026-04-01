@@ -7,6 +7,7 @@ import PageTransition from "./components/PageTransition";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import SecretTwo from "./pages/Secret-2";
+import SecretEvidenceTrigger from "./components/SecretEvidenceTrigger";
 
 import { SecretUnlockProvider } from "./components/SecretUnlockContext";
 
@@ -31,6 +32,7 @@ export default function App() {
         <BloodDrips enabled intervalMs={2200} />
 
         <SecretUnlockProvider>
+          <SecretEvidenceTrigger />
           <Navbar />
 
           <div className="app-shell">
