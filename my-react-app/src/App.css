@@ -21,10 +21,6 @@
   color: #e6e1dc;
 }
 
-/* =========================
-   SECRET EVIDENCE MODAL
-   ========================= */
-
 .secret-evidence-overlay {
   position: fixed;
   inset: 0;
